@@ -20,7 +20,7 @@ console = Console(tab_size=4)
 
 @app.callback(invoke_without_command=True, no_args_is_help=True)
 def main_callback(version: bool = Option(False, help="Show the package version.")):
-    """Roma command line interface."""
+    """Dbt2Pdf command line interface."""
     if version:
         console.print(f"dbt2pdf, version {__version__}")
 
