@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "dbt2pdf"
-version = "0.0.1"
+version = "0.0.2"
 description = "Generate a PDF document from your DBT project's documentation."
 authors = ["Dribia Data Research <code@dribia.com>"]
 maintainers = ["Albert Iribarne <iribarne@dribia.com>", "Dribia Data Research <code@dribia.com>"]
