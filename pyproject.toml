@@ -26,6 +26,7 @@ rich = "^13.8.0"
 fpdf2 = "^2.7.9"
 matplotlib = "^3.9.2"
 dbt-artifacts-parser = "^0.7.0"
+pydantic = "^2.0"
 
 [tool.poetry.group.dev.dependencies]
 pre-commit = "^3.8.0"

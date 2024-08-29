@@ -10,6 +10,7 @@ from typer import Argument, Option, Typer
 from dbt2pdf import __version__, utils
 from dbt2pdf.manifest import parse_manifest
 from dbt2pdf.pdf import PDF
+from dbt2pdf.schemas import ExtractedDescription, ExtractedMacro, ExtractedModel
 
 app = Typer()
 
@@ -55,20 +56,18 @@ def generate(
         authors = []
     for node_info in manifest.nodes.values():
         if node_info.resource_type == "model":
-            model_info = {
-                "name": utils.clean_text(node_info.name),
-                "description": utils.clean_text(node_info.description),
-                "columns": node_info.columns,
-            }
-            column_descriptions_ = []
-            for col_name, col_info in model_info["columns"].items():
-                column_descriptions_.append(
-                    {
-                        "name": utils.clean_text(col_name),
-                        "description": utils.clean_text(col_info.description),
-                    }
-                )
-            model_info["column_descriptions"] = column_descriptions_
+            model_info = ExtractedModel(
+                name=utils.clean_text(node_info.name),
+                description=utils.clean_text(node_info.description),
+                columns=node_info.columns,
+                column_descriptions=[
+                    ExtractedDescription(
+                        name=utils.clean_text(col_name),
+                        description=utils.clean_text(col_info.description),
+                    )
+                    for col_name, col_info in node_info.columns.items()
+                ],
+            )
             extracted_data.append(model_info)
 
     # Format the data for macros (keep only the ones of the current project)
@@ -76,20 +75,17 @@ def generate(
     macro_data = []
     for macro_name, macro_info in manifest.macros.items():
         if macro_info.package_name in macro_packages:
-            macro_info_dict = {
-                "name": utils.clean_text(macro_name),
-                "description": utils.clean_text(macro_info.description),
-                "arguments": macro_info.arguments,
-            }
-            arguments = macro_info_dict["arguments"]
-            argument_descriptions_ = []
-            for arg in arguments:
-                arg_name = utils.clean_text(arg.name)
-                arg_description = utils.clean_text(arg.description)
-                argument_descriptions_.append(
-                    {"name": arg_name, "description": arg_description}
-                )
-            macro_info_dict["argument_descriptions"] = argument_descriptions_
+            macro_info_dict = ExtractedMacro(
+                name=utils.clean_text(macro_name),
+                description=utils.clean_text(macro_info.description),
+                argument_descriptions=[
+                    ExtractedDescription(
+                        name=utils.clean_text(arg.name),
+                        description=utils.clean_text(arg.description),
+                    )
+                    for arg in macro_info.arguments
+                ],
+            )
             macro_data.append(macro_info_dict)
 
     intro_text_ = (
@@ -111,19 +107,19 @@ def generate(
     if extracted_data:
         temp_pdf.add_page_with_title("Models")
         for model in extracted_data:
-            temp_pdf.subchapter_title(model["name"])
+            temp_pdf.subchapter_title(model.name)
             temp_pdf.chapter_body(
-                body=model["description"],
-                column_descriptions=model["column_descriptions"],
+                body=model.description,
+                column_descriptions=model.column_descriptions,
             )
 
     if macro_data:
         temp_pdf.add_page_with_title("Macros")
         for macro in macro_data:
-            temp_pdf.subchapter_title(macro["name"])
+            temp_pdf.subchapter_title(macro.name)
             temp_pdf.chapter_body(
-                body=macro["description"],
-                argument_descriptions=macro["argument_descriptions"],
+                body=macro.description,
+                argument_descriptions=macro.argument_descriptions,
             )
 
     # Create the final PDF with the correct total page count
@@ -138,19 +134,19 @@ def generate(
     if extracted_data:
         final_pdf.add_page_with_title("Models")
         for model in extracted_data:
-            final_pdf.subchapter_title(model["name"])
+            final_pdf.subchapter_title(model.name)
             final_pdf.chapter_body(
-                body=model["description"],
-                column_descriptions=model["column_descriptions"],
+                body=model.description,
+                column_descriptions=model.column_descriptions,
             )
 
     if macro_data:
         final_pdf.add_page_with_title("Macros")
         for macro in macro_data:
-            final_pdf.subchapter_title(macro["name"])
+            final_pdf.subchapter_title(macro.name)
             final_pdf.chapter_body(
-                body=macro["description"],
-                argument_descriptions=macro["argument_descriptions"],
+                body=macro.description,
+                argument_descriptions=macro.argument_descriptions,
             )
 
     # Save the final PDF

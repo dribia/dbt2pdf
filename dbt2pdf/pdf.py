@@ -1,9 +1,13 @@
 """Module to define a DBT documentation PDF file class."""
 
+from __future__ import annotations
+
 from datetime import datetime
 from typing import Any
 
 from fpdf import FPDF
+
+from dbt2pdf.schemas import ExtractedDescription
 
 # FONTS_PATH = Path("fonts")
 # LOGOS_PATH = Path("logos")
@@ -132,8 +136,8 @@ class PDF(FPDF):
     def chapter_body(
         self,
         body: str,
-        column_descriptions: list[dict] | None = None,
-        argument_descriptions: list[dict] | None = None,
+        column_descriptions: list[ExtractedDescription] | None = None,
+        argument_descriptions: list[ExtractedDescription] | None = None,
     ) -> None:
         """Add a chapter body to the PDF."""
         # self.set_font(family="Roboto", size=11)
@@ -161,7 +165,7 @@ class PDF(FPDF):
         if argument_descriptions:
             self.create_table(argument_descriptions, table_type="arguments")
 
-    def create_table(self, data: list[dict], table_type: str) -> None:
+    def create_table(self, data: list[ExtractedDescription], table_type: str) -> None:
         """Create a table with the provided data."""
         col_widths = [80, 100]  # Width of columns
         line_height = self.font_size * 2.5  # Adjust line height based on font size
@@ -207,10 +211,10 @@ class PDF(FPDF):
             x_start = self.get_x()
             y_start = self.get_y()
 
-            self.cell(w=col_widths[0], h=line_height, text=row["name"], border="T")
+            self.cell(w=col_widths[0], h=line_height, text=row.name, border="T")
             self.set_x(x_start + col_widths[0])
             self.multi_cell(
-                w=col_widths[1], h=line_height, text=row["description"], border="T"
+                w=col_widths[1], h=line_height, text=row.description, border="T"
             )
             row_height = self.get_y() - y_start
             self.set_y(y_start + row_height)
