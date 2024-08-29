@@ -5,11 +5,17 @@ from __future__ import annotations
 from enum import Enum
 from typing import Any
 
+import pydantic
 from pydantic import BaseModel, ConfigDict
 
 
 class _BaseSchema(BaseModel):
-    model_config = ConfigDict(extra="allow")
+    if pydantic.__version__.startswith("1."):
+
+        class Config:
+            extra = "allow"
+    else:
+        model_config = ConfigDict(extra="allow")
 
 
 class Column(_BaseSchema):
@@ -62,7 +68,10 @@ class Manifest(_BaseSchema):
 
 def parse_manifest(manifest: dict[str, Any]) -> Manifest:
     """Parse a DBT manifest file."""
-    return Manifest.model_validate(manifest)
+    if pydantic.__version__.startswith("1."):
+        return Manifest.parse_obj(manifest)
+    else:
+        return Manifest.model_validate(manifest)
 
 
 __all__ = [
