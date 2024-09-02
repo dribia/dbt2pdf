@@ -2,8 +2,8 @@
 name = "dbt2pdf"
 version = "0.0.4"
 description = "Generate a PDF document from your DBT project's documentation."
-authors = ["Dribia Data Research <code@dribia.com>"]
-maintainers = ["Albert Iribarne <iribarne@dribia.com>", "Dribia Data Research <code@dribia.com>"]
+authors = ["Dribia Code <code@dribia.com>"]
+maintainers = ["Dribia Code <code@dribia.com>"]
 license = "MIT"
 readme = "README.md"
 repository = "https://github.com/dribia/dbt2pdf"
