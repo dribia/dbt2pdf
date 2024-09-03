@@ -26,7 +26,7 @@ class PDF(FPDF):
         Args:
             title: Document title (title page and headers).
             authors: List of authors to list them in the title page.
-            font_family: str
+            font_family: Font family to use in the PDF document.
             **kwargs: Keyword arguments to the FPDF constructor.
         """
         super().__init__(**kwargs)
