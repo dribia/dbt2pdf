@@ -15,6 +15,7 @@ from dbt2pdf.schemas import ExtractedDescription, ExtractedMacro, ExtractedModel
 app = Typer()
 
 TITLE = "DBT Documentation"
+FONT_FAMILY = "Ubuntu"
 
 console = Console(tab_size=4)
 
@@ -45,12 +46,12 @@ def generate(
         ),
     ] = None,
     font_family: Annotated[
-        Optional[str],
+        str,
         Option(
             "--font-family",
             help="Font family to use in the PDF document.",
         ),
-    ] = None,
+    ] = FONT_FAMILY,
 ):
     """Generate the PDF documentation of a DBT project."""
     with open(manifest_path, encoding="utf-8") as file:
@@ -61,8 +62,6 @@ def generate(
         macro_packages = []
     if authors is None:
         authors = []
-    if font_family is None:
-        font_family = "Ubuntu"
 
     for node_info in manifest.nodes.values():
         if node_info.resource_type == "model":
