@@ -44,6 +44,13 @@ def generate(
             help="Add macros from the given package to the generated document.",
         ),
     ] = None,
+    font_family: Annotated[
+        Optional[str],
+        Option(
+            "--font-family",
+            help="Font family to use in the PDF document.",
+        ),
+    ] = None,
 ):
     """Generate the PDF documentation of a DBT project."""
     with open(manifest_path, encoding="utf-8") as file:
@@ -54,6 +61,9 @@ def generate(
         macro_packages = []
     if authors is None:
         authors = []
+    if font_family is None:
+        font_family = "Ubuntu"
+
     for node_info in manifest.nodes.values():
         if node_info.resource_type == "model":
             model_info = ExtractedModel(
@@ -70,7 +80,6 @@ def generate(
             )
             extracted_data.append(model_info)
 
-    # Format the data for macros (keep only the ones of the current project)
     # Format the data for macros (keep only the ones of the current project)
     macro_data = []
     for macro_name, macro_info in manifest.macros.items():
@@ -97,7 +106,7 @@ def generate(
     )
 
     # Create a temporary PDF to count the number of pages
-    temp_pdf = PDF(title=title, authors=authors)
+    temp_pdf = PDF(title=title, authors=authors, font_family=font_family)
     temp_pdf.set_top_margin(10)
     temp_pdf.set_left_margin(15)
     temp_pdf.set_right_margin(15)
@@ -123,7 +132,7 @@ def generate(
             )
 
     # Create the final PDF with the correct total page count
-    final_pdf = PDF(title=title, authors=authors)
+    final_pdf = PDF(title=title, authors=authors, font_family=font_family)
     final_pdf.total_pages = temp_pdf.page_no()  # Set the total page count
     final_pdf.set_top_margin(10)
     final_pdf.set_left_margin(15)
