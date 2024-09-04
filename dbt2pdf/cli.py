@@ -15,7 +15,6 @@ from dbt2pdf.schemas import ExtractedDescription, ExtractedMacro, ExtractedModel
 app = Typer()
 
 TITLE = "DBT Documentation"
-
 console = Console(tab_size=4)
 
 
@@ -44,6 +43,15 @@ def generate(
             help="Add macros from the given package to the generated document.",
         ),
     ] = None,
+    logos: Annotated[
+        Optional[list[Path]],
+        Option(
+            "--add-logo",
+            help="Add a logo to the document. The logo should be a PNG file.",
+            exists=True,
+            dir_okay=False,
+        ),
+    ] = None,
 ):
     """Generate the PDF documentation of a DBT project."""
     with open(manifest_path, encoding="utf-8") as file:
@@ -54,6 +62,12 @@ def generate(
         macro_packages = []
     if authors is None:
         authors = []
+    if logos is None:
+        logos = []
+
+    if len(logos) > 2:
+        raise ValueError("Only two logos at maximum are allowed.")
+
     for node_info in manifest.nodes.values():
         if node_info.resource_type == "model":
             model_info = ExtractedModel(
@@ -70,7 +84,6 @@ def generate(
             )
             extracted_data.append(model_info)
 
-    # Format the data for macros (keep only the ones of the current project)
     # Format the data for macros (keep only the ones of the current project)
     macro_data = []
     for macro_name, macro_info in manifest.macros.items():
@@ -97,7 +110,7 @@ def generate(
     )
 
     # Create a temporary PDF to count the number of pages
-    temp_pdf = PDF(title=title, authors=authors)
+    temp_pdf = PDF(title=title, authors=authors, logos=logos)
     temp_pdf.set_top_margin(10)
     temp_pdf.set_left_margin(15)
     temp_pdf.set_right_margin(15)
@@ -123,7 +136,7 @@ def generate(
             )
 
     # Create the final PDF with the correct total page count
-    final_pdf = PDF(title=title, authors=authors)
+    final_pdf = PDF(title=title, authors=authors, logos=logos)
     final_pdf.total_pages = temp_pdf.page_no()  # Set the total page count
     final_pdf.set_top_margin(10)
     final_pdf.set_left_margin(15)
