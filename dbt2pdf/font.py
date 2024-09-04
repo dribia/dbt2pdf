@@ -42,9 +42,7 @@ class Font(BaseModel):
     def validate_style(cls, value):
         """Validate the font style."""
         if isinstance(value, str):
-            # Map string style to the corresponding FontStyle value
             value = value.upper()
-            # Check for aliases
             value = STYLE_ALIASES.get(value, value)
             if value in FontStyle.__members__:
                 return FontStyle[value]
