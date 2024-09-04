@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from datetime import datetime
+from pathlib import Path
 from typing import Any
 
 from fpdf import FPDF
@@ -10,19 +11,22 @@ from fpdf import FPDF
 from dbt2pdf.schemas import ExtractedDescription
 
 # FONTS_PATH = Path("fonts")
-# LOGOS_PATH = Path("logos")
+LOGOS_PATH = Path("logos")
 TITLE = "DBT Documentation"
 
 
 class PDF(FPDF):
     """Class to generate a PDF with the models and macros documentation."""
 
-    def __init__(self, *, title: str, authors: list[str], **kwargs: Any) -> None:
+    def __init__(
+        self, *, title: str, authors: list[str], add_logo: int, **kwargs: Any
+    ) -> None:
         """Initialize the PDF with custom margins and auto page breaks.
 
         Args:
             title: Document title (title page and headers).
             authors: List of authors to list them in the title page.
+            add_logo: Number of logos to add to the document (max 2).
             **kwargs: Keyword arguments to the FPDF constructor.
         """
         super().__init__(**kwargs)
@@ -36,6 +40,7 @@ class PDF(FPDF):
         self.is_intro_page: bool = True
         self.total_pages: int | None = None
         self.set_font("Times")
+        self.add_logo = add_logo
         # self.add_font(family="Roboto", fname=str(FONTS_PATH / "Roboto-Regular.ttf"))
         # self.add_font(
         #     family="Roboto", style="B", fname=str(FONTS_PATH / "Roboto-Bold.ttf")
@@ -75,12 +80,14 @@ class PDF(FPDF):
             return
         self.set_text_color(r=169, g=169, b=169)
         self.set_y(-15)
-        # self.image(
-        #     name=str(LOGOS_PATH / "logo_dribia.png"), x=165, y=self.get_y() - 5, w=30
-        # )
-        # self.image(
-        #     name=str(LOGOS_PATH / "logo_client.png"), x=15, y=self.get_y() - 7, w=20
-        # )
+        if self.add_logo > 0:
+            self.image(
+                name=str(LOGOS_PATH / "logo1.png"), x=165, y=self.get_y() - 10, w=30
+            )
+        if self.add_logo > 1:
+            self.image(
+                name=str(LOGOS_PATH / "logo2.png"), x=15, y=self.get_y() - 10, w=30
+            )
 
     def page_title(self) -> None:
         """Add a page title to the PDF."""
@@ -90,9 +97,11 @@ class PDF(FPDF):
         logo_width = 100
         page_width = self.w
         x_centered = (page_width - logo_width) / 2
-        # self.image(
-        #     name=str(LOGOS_PATH / "logo_dribia.png"), x=x_centered, y=55, w=logo_width
-        # )
+        if self.add_logo > 0:
+            print("HOLA")
+            self.image(
+                name=str(LOGOS_PATH / "logo1.png"), x=x_centered, y=55, w=logo_width
+            )
 
         self.ln(100)
 
@@ -103,9 +112,11 @@ class PDF(FPDF):
         logo_width = 40
         page_width = self.w
         x_centered = (page_width - logo_width) / 2  # noqa: F841
-        # self.image(
-        #     name=str(LOGOS_PATH / "logo_client.png"), x=x_centered, y=140, w=logo_width
-        # )
+        if self.add_logo > 1:
+            print("ADEU")
+            self.image(
+                name=str(LOGOS_PATH / "logo2.png"), x=x_centered, y=140, w=logo_width
+            )
 
         self.ln(80)
 
