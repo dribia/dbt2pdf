@@ -15,7 +15,7 @@ from dbt2pdf.schemas import ExtractedDescription, ExtractedMacro, ExtractedModel
 app = Typer()
 
 TITLE = "DBT Documentation"
-
+ADD_LOGO = 0
 console = Console(tab_size=4)
 
 
@@ -44,8 +44,20 @@ def generate(
             help="Add macros from the given package to the generated document.",
         ),
     ] = None,
+    add_logo: Annotated[
+        int,
+        Option(
+            "--add-logo",
+            help="Add a logo to the document. The logo should be a PNG file.",
+            exists=True,
+            dir_okay=False,
+        ),
+    ] = ADD_LOGO,
 ):
     """Generate the PDF documentation of a DBT project."""
+    if add_logo > 2:
+        raise ValueError("The value for --add-logo cannot be greater than 2.")
+
     with open(manifest_path, encoding="utf-8") as file:
         manifest = parse_manifest(json.load(file))
     # Extract relevant information (models and macros)
@@ -70,7 +82,6 @@ def generate(
             )
             extracted_data.append(model_info)
 
-    # Format the data for macros (keep only the ones of the current project)
     # Format the data for macros (keep only the ones of the current project)
     macro_data = []
     for macro_name, macro_info in manifest.macros.items():
@@ -97,7 +108,7 @@ def generate(
     )
 
     # Create a temporary PDF to count the number of pages
-    temp_pdf = PDF(title=title, authors=authors)
+    temp_pdf = PDF(title=title, authors=authors, add_logo=add_logo)
     temp_pdf.set_top_margin(10)
     temp_pdf.set_left_margin(15)
     temp_pdf.set_right_margin(15)
@@ -123,7 +134,7 @@ def generate(
             )
 
     # Create the final PDF with the correct total page count
-    final_pdf = PDF(title=title, authors=authors)
+    final_pdf = PDF(title=title, authors=authors, add_logo=add_logo)
     final_pdf.total_pages = temp_pdf.page_no()  # Set the total page count
     final_pdf.set_top_margin(10)
     final_pdf.set_left_margin(15)
