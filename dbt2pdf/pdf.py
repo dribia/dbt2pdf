@@ -25,7 +25,7 @@ class PDF(FPDF):
         Args:
             title: Document title (title page and headers).
             authors: List of authors to list them in the title page.
-            logos: Number of logos to add to the document (max 2).
+            logos: List of paths to logos (max 2).
             **kwargs: Keyword arguments to the FPDF constructor.
         """
         super().__init__(**kwargs)
