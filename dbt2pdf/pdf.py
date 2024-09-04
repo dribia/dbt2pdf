@@ -98,7 +98,6 @@ class PDF(FPDF):
         page_width = self.w
         x_centered = (page_width - logo_width) / 2
         if self.add_logo > 0:
-            print("HOLA")
             self.image(
                 name=str(LOGOS_PATH / "logo1.png"), x=x_centered, y=55, w=logo_width
             )
@@ -113,7 +112,6 @@ class PDF(FPDF):
         page_width = self.w
         x_centered = (page_width - logo_width) / 2  # noqa: F841
         if self.add_logo > 1:
-            print("ADEU")
             self.image(
                 name=str(LOGOS_PATH / "logo2.png"), x=x_centered, y=140, w=logo_width
             )
