@@ -5,8 +5,6 @@ from importlib import reload
 from importlib.metadata import PackageNotFoundError
 from unittest.mock import patch
 
-import dbt2pdf
-
 
 class TestInit:
     """Test the module initialization and version information."""
@@ -17,6 +15,8 @@ class TestInit:
         if "dbt2pdf" in sys.modules:
             del sys.modules["dbt2pdf"]
 
+        import dbt2pdf
+
         reload(dbt2pdf)
         assert dbt2pdf.__version__ == "unknown"
 
@@ -26,6 +26,8 @@ class TestInit:
         mock_version.return_value = "0.1.0"
         if "dbt2pdf" in sys.modules:
             del sys.modules["dbt2pdf"]
+
+        import dbt2pdf
 
         reload(dbt2pdf)
         assert dbt2pdf.__version__ == "0.1.0"
