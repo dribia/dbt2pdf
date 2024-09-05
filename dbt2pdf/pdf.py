@@ -11,7 +11,6 @@ from fpdf import FPDF
 from dbt2pdf.font import find
 from dbt2pdf.schemas import ExtractedDescription
 
-# FONTS_PATH = Path("fonts")
 TITLE = "DBT Documentation"
 
 
