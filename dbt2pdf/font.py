@@ -16,6 +16,45 @@ class FontStyle(Enum):
     BOLD = "B"
     ITALIC = "I"
     UNDERLINE = "U"
+    ASSAMESE = "AS"
+    BDITA = "BD"
+    BENGALI = "BE"
+    BLACK = "BL"
+    BLACKITALIC = "BLI"
+    BOLDITALIC = "BI"
+    BOOK = "BO"
+    BOOKOBLIQUE = "BOO"
+    C = "C"
+    DEMI = "D"
+    DEMIITALIC = "DI"
+    DEMIOBLIQUE = "DO"
+    DEVANAGARI = "DE"
+    EXTRABOLD = "EB"
+    EXTRALIGHT = "EL"
+    GUJARATI = "GU"
+    GURMUKHI = "G"
+    HAIRLINE = "H"
+    HAIRLINEITALIC = "HI"
+    HALFLINGS = "HALF"
+    HEAVY = "HV"
+    HEAVYITALIC = "HVI"
+    KANNADA = "KA"
+    LIGHT = "L"
+    LIGHTITALIC = "LI"
+    MALAYALAM = "MA"
+    MATH = "MATH"
+    MEDIUM = "M"
+    MEDIUMITALIC = "MI"
+    ODIA = "O"
+    RI = "RI"
+    ROMAN = "RO"
+    SEMIBOLD = "SB"
+    SEMIBOLDITALIC = "SBI"
+    TAMIL = "TA"
+    TELUGU = "TE"
+    THIN = "TH"
+    THINITALIC = "THI"
+    WEBFONT = "WF"
 
 
 # Mapping for common style abbreviations to full names
@@ -25,6 +64,14 @@ STYLE_ALIASES = {
     "I": "Italic",
     "U": "Underline",
     "OBLIQUE": "Italic",
+    "BI": "BoldItalic",
+    "BOLDOBLIQUE": "BoldItalic",
+    "LI": "LightItalic",
+    "L": "Light",
+    "LIGHTOBLIQUE": "LightItalic",
+    "M": "Medium",
+    "MI": "MediumItalic",
+    "TH": "Thin",
 }
 
 
