@@ -1,7 +1,7 @@
 """Module for font handling."""
 
 from enum import Enum
-from typing import Dict, Literal
+from typing import Dict
 
 from matplotlib.font_manager import findSystemFonts
 from pydantic import BaseModel, field_validator
@@ -31,12 +31,7 @@ class Font(BaseModel):
 
     path: str
     family: str
-    style: Literal[
-        FontStyle.REGULAR,
-        FontStyle.BOLD,
-        FontStyle.ITALIC,
-        FontStyle.UNDERLINE,
-    ]
+    style: FontStyle
 
     @field_validator("style", mode="before")
     def validate_style(cls, value):
