@@ -49,21 +49,22 @@ class PDF(FPDF):
 
         # Find Font objects by font_family
         self.font_family = font_family
-        self.is_bold = False
+        self.bold_style = ""
         if self.font_family is not None:
             fonts = find(font_family)
 
             for _, font in fonts.items():
                 if font.style.value == "B":
-                    self.is_bold = True
+                    self.bold_style = font.style.value
 
                 self.add_font(
                     family=font.family, style=font.style.value, fname=font.path
                 )
 
-            self.set_font(family=font_family, style="B")
+            self.set_font(family=font_family, style=self.bold_style)
         else:
             self.set_font("Times")
+            self.bold_style = "B"
 
         self.logos = logos
 
@@ -122,10 +123,7 @@ class PDF(FPDF):
         self.ln(100)
 
         if self.font_family is not None:
-            if self.is_bold:
-                self.set_font(family=self.font_family, style="B", size=35)
-            else:
-                self.set_font(family=self.font_family, size=35)
+            self.set_font(family=self.font_family, style=self.bold_style, size=35)
 
         self.set_text_color(r=0, g=76, b=183)
         self.cell(w=0, h=10, text=self.title, border=0, align="C")
@@ -139,10 +137,7 @@ class PDF(FPDF):
         self.ln(80)
 
         if self.font_family is not None:
-            if self.is_bold:
-                self.set_font(family=self.font_family, style="B", size=14)
-            else:
-                self.set_font(family=self.font_family, size=14)
+            self.set_font(family=self.font_family, style=self.bold_style, size=14)
 
         self.set_text_color(r=0, g=0, b=78)
         self.cell(
@@ -155,10 +150,7 @@ class PDF(FPDF):
     def chapter_title(self, title: str) -> None:
         """Add a chapter title to the PDF."""
         if self.font_family is not None:
-            if self.is_bold:
-                self.set_font(family=self.font_family, style="B", size=24)
-            else:
-                self.set_font(family=self.font_family, size=24)
+            self.set_font(family=self.font_family, style=self.bold_style, size=24)
 
         self.set_text_color(r=0, g=76, b=183)
         self.cell(w=0, h=10, text=title, border=0, align="L")
@@ -168,10 +160,7 @@ class PDF(FPDF):
         """Add a chapter title to the PDF."""
         self.ln(5)
         if self.font_family is not None:
-            if self.is_bold:
-                self.set_font(family=self.font_family, style="B", size=16)
-            else:
-                self.set_font(family=self.font_family, size=16)
+            self.set_font(family=self.font_family, style=self.bold_style, size=16)
 
         self.set_text_color(r=54, g=132, b=235)
         self.cell(w=0, h=10, text=title, border=0, align="L")
@@ -196,10 +185,9 @@ class PDF(FPDF):
                 or line.startswith("Arguments")
             ):
                 if self.font_family is not None:
-                    if self.is_bold:
-                        self.set_font(family=self.font_family, style="B", size=11)
-                    else:
-                        self.set_font(family=self.font_family, size=11)
+                    self.set_font(
+                        family=self.font_family, style=self.bold_style, size=11
+                    )
 
                 self.set_text_color(r=54, g=132, b=235)
                 self.cell(w=0, h=10, text=line, new_x="LMARGIN", new_y="TOP")
@@ -221,10 +209,7 @@ class PDF(FPDF):
         col_widths = [80, 100]  # Width of columns
         line_height = self.font_size * 2.5  # Adjust line height based on font size
         if self.font_family is not None:
-            if self.is_bold:
-                self.set_font(family=self.font_family, style="B", size=11)
-            else:
-                self.set_font(family=self.font_family, size=11)
+            self.set_font(family=self.font_family, style=self.bold_style, size=11)
 
         self.set_fill_color(r=200, g=220, b=255)
 
