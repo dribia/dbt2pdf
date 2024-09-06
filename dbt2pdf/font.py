@@ -4,7 +4,7 @@ from enum import Enum
 from typing import Dict
 
 from matplotlib.font_manager import findSystemFonts
-from pydantic import BaseModel, field_validator
+from pydantic import BaseModel
 
 from dbt2pdf.logger import logger
 
@@ -82,18 +82,8 @@ class Font(BaseModel):
     family: str
     style: FontStyle
 
-    @field_validator("style", mode="before")
-    def validate_style(cls, value):
-        """Validate the font style."""
-        if isinstance(value, str):
-            value = value.upper()
-            value = STYLE_ALIASES.get(value, value)
-            if value in FontStyle.__members__:
-                return FontStyle[value]
-            raise Warning(f"Invalid font style: {value}")
-        return value
-
-    def __init__(self, path: str):
+    @staticmethod
+    def get_font(path: str):
         """Initialize the Font class."""
         family_style = path.split("/")[-1].split(".")[0]
         family_style_split = family_style.split("-")
@@ -102,9 +92,13 @@ class Font(BaseModel):
 
         # Handle different style abbreviations
         style = STYLE_ALIASES.get(style.upper(), style)
+        if isinstance(style, str):
+            style = style.upper()
+            style = STYLE_ALIASES.get(style, style)
+            if style not in FontStyle.__members__:
+                raise Warning(f"Invalid font style: {style}")
 
-        # Call Pydantic's __init__ method with the fields
-        super().__init__(path=path, family=family, style=style)
+        return Font(path=path, family=family, style=FontStyle[style.upper()])
 
 
 def find(family: str | None) -> Dict[FontStyle, Font]:
@@ -113,7 +107,7 @@ def find(family: str | None) -> Dict[FontStyle, Font]:
     if family is not None:
         for font_path in findSystemFonts():
             try:
-                font = Font(font_path)
+                font = Font.get_font(font_path)
                 if font.family.lower() == family.lower():
                     if font.style in [
                         FontStyle.REGULAR,
