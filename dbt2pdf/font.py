@@ -63,12 +63,10 @@ def find(family: str | None) -> Dict[FontStyle, Font]:
     paths = findSystemFonts()
     font_dict = {}
     if family is not None:
-        family_lower = family.lower()
-
         for font_path in paths:
             try:
                 font = Font(font_path)
-                if font.family.lower() == family_lower:
+                if font.family.lower() == family.lower():
                     if font.style in [
                         FontStyle.REGULAR,
                         FontStyle.BOLD,
