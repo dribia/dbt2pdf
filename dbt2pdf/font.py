@@ -6,6 +6,8 @@ from typing import Dict
 from matplotlib.font_manager import findSystemFonts
 from pydantic import BaseModel, field_validator
 
+from dbt2pdf.logger import logger
+
 
 class FontStyle(Enum):
     """Font style enumeration."""
@@ -73,7 +75,7 @@ def find(family: str | None) -> Dict[FontStyle, Font]:
                     ]:
                         font_dict[font.style] = font
             except Exception as e:
-                print(f"Error processing font at {font_path}: {e}")
+                logger.debug(f"Error processing font at {font_path}: {e}")
 
     if not font_dict:
         raise ValueError(
