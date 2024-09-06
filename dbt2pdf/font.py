@@ -63,20 +63,25 @@ class Font(BaseModel):
         super().__init__(path=path, family=family, style=style)
 
 
-def find(family: str) -> Dict[FontStyle, Font]:
+def find(family: str | None) -> Dict[FontStyle, Font]:
     """Find fonts in the system by family."""
     paths = findSystemFonts()
     font_dict = {}
-    family_lower = family.lower()
+    if family is not None:
+        family_lower = family.lower()
 
-    for font_path in paths:
-        try:
-            font = Font(font_path)
-            if font.family.lower() == family_lower:
-                if font.style in [FontStyle.REGULAR, FontStyle.BOLD, FontStyle.ITALIC]:
-                    font_dict[font.style] = font
-        except Exception as e:
-            print(f"Error processing font at {font_path}: {e}")
+        for font_path in paths:
+            try:
+                font = Font(font_path)
+                if font.family.lower() == family_lower:
+                    if font.style in [
+                        FontStyle.REGULAR,
+                        FontStyle.BOLD,
+                        FontStyle.ITALIC,
+                    ]:
+                        font_dict[font.style] = font
+            except Exception as e:
+                print(f"Error processing font at {font_path}: {e}")
 
     if not font_dict:
         raise ValueError(

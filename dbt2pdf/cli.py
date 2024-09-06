@@ -15,7 +15,6 @@ from dbt2pdf.schemas import ExtractedDescription, ExtractedMacro, ExtractedModel
 app = Typer()
 
 TITLE = "DBT Documentation"
-FONT_FAMILY = "Ubuntu"
 
 console = Console(tab_size=4)
 
@@ -46,12 +45,12 @@ def generate(
         ),
     ] = None,
     font_family: Annotated[
-        str,
+        Optional[str],
         Option(
             "--font-family",
             help="Font family to use in the PDF document.",
         ),
-    ] = FONT_FAMILY,
+    ] = None,
     logos: Annotated[
         Optional[list[Path]],
         Option(

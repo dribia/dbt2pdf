@@ -23,7 +23,7 @@ class PDF(FPDF):
         title: str,
         authors: list[str],
         logos: list[Path],
-        font_family: str,
+        font_family: str | None,
         **kwargs: Any,
     ) -> None:
         """Initialize the PDF with custom margins and auto page breaks.
@@ -49,15 +49,22 @@ class PDF(FPDF):
 
         # Find Font objects by font_family
         self.font_family = font_family
-        fonts = find(font_family)
         self.is_bold = False
-        for _, font in fonts.items():
-            if font.style.value == "B":
-                self.is_bold = True
+        if self.font_family is not None:
+            fonts = find(font_family)
 
-            self.add_font(family=font.family, style=font.style.value, fname=font.path)
+            for _, font in fonts.items():
+                if font.style.value == "B":
+                    self.is_bold = True
 
-        self.set_font(family=font_family, style="B")
+                self.add_font(
+                    family=font.family, style=font.style.value, fname=font.path
+                )
+
+            self.set_font(family=font_family, style="B")
+        else:
+            self.set_font("Times")
+
         self.logos = logos
 
         if len(logos) > 2:
@@ -67,14 +74,16 @@ class PDF(FPDF):
         """Add a header to the PDF."""
         if self.is_first_page:
             return
-        self.set_font(family=self.font_family, size=10)
+        if self.font_family is not None:
+            self.set_font(family=self.font_family, size=10)
         self.set_text_color(r=54, g=132, b=235)
         self.cell(w=0, h=13, text=TITLE, border=0, align="L")
         y = self.get_y()
 
         # Get page number and total pages
         page_number = self.page_no()
-        self.set_font(family=self.font_family, size=10)
+        if self.font_family is not None:
+            self.set_font(family=self.font_family, size=10)
         self.set_text_color(r=87, g=87, b=87)
         if self.total_pages is not None:
             self.set_x(190)  # Move to the right side
@@ -112,10 +121,11 @@ class PDF(FPDF):
 
         self.ln(100)
 
-        if self.is_bold:
-            self.set_font(family=self.font_family, style="B", size=35)
-        else:
-            self.set_font(family=self.font_family, size=35)
+        if self.font_family is not None:
+            if self.is_bold:
+                self.set_font(family=self.font_family, style="B", size=35)
+            else:
+                self.set_font(family=self.font_family, size=35)
 
         self.set_text_color(r=0, g=76, b=183)
         self.cell(w=0, h=10, text=self.title, border=0, align="C")
@@ -128,10 +138,11 @@ class PDF(FPDF):
 
         self.ln(80)
 
-        if self.is_bold:
-            self.set_font(family=self.font_family, style="B", size=14)
-        else:
-            self.set_font(family=self.font_family, size=14)
+        if self.font_family is not None:
+            if self.is_bold:
+                self.set_font(family=self.font_family, style="B", size=14)
+            else:
+                self.set_font(family=self.font_family, size=14)
 
         self.set_text_color(r=0, g=0, b=78)
         self.cell(
@@ -143,10 +154,11 @@ class PDF(FPDF):
 
     def chapter_title(self, title: str) -> None:
         """Add a chapter title to the PDF."""
-        if self.is_bold:
-            self.set_font(family=self.font_family, style="B", size=24)
-        else:
-            self.set_font(family=self.font_family, size=24)
+        if self.font_family is not None:
+            if self.is_bold:
+                self.set_font(family=self.font_family, style="B", size=24)
+            else:
+                self.set_font(family=self.font_family, size=24)
 
         self.set_text_color(r=0, g=76, b=183)
         self.cell(w=0, h=10, text=title, border=0, align="L")
@@ -155,10 +167,11 @@ class PDF(FPDF):
     def subchapter_title(self, title: str) -> None:
         """Add a chapter title to the PDF."""
         self.ln(5)
-        if self.is_bold:
-            self.set_font(family=self.font_family, style="B", size=16)
-        else:
-            self.set_font(family=self.font_family, size=16)
+        if self.font_family is not None:
+            if self.is_bold:
+                self.set_font(family=self.font_family, style="B", size=16)
+            else:
+                self.set_font(family=self.font_family, size=16)
 
         self.set_text_color(r=54, g=132, b=235)
         self.cell(w=0, h=10, text=title, border=0, align="L")
@@ -171,7 +184,8 @@ class PDF(FPDF):
         argument_descriptions: list[ExtractedDescription] | None = None,
     ) -> None:
         """Add a chapter body to the PDF."""
-        self.set_font(family=self.font_family, size=11)
+        if self.font_family is not None:
+            self.set_font(family=self.font_family, size=11)
         self.set_text_color(r=0, g=0, b=0)
 
         lines = body.split("\n")
@@ -181,15 +195,17 @@ class PDF(FPDF):
                 or line.startswith("Columns")
                 or line.startswith("Arguments")
             ):
-                if self.is_bold:
-                    self.set_font(family=self.font_family, style="B", size=11)
-                else:
-                    self.set_font(family=self.font_family, size=11)
+                if self.font_family is not None:
+                    if self.is_bold:
+                        self.set_font(family=self.font_family, style="B", size=11)
+                    else:
+                        self.set_font(family=self.font_family, size=11)
 
                 self.set_text_color(r=54, g=132, b=235)
                 self.cell(w=0, h=10, text=line, new_x="LMARGIN", new_y="TOP")
                 self.ln(10)
-                self.set_font(family=self.font_family, size=11)
+                if self.font_family is not None:
+                    self.set_font(family=self.font_family, size=11)
                 self.set_text_color(r=0, g=0, b=0)
             else:
                 self.multi_cell(w=0, h=10, text=line, new_x="LMARGIN", new_y="TOP")
@@ -204,10 +220,11 @@ class PDF(FPDF):
         """Create a table with the provided data."""
         col_widths = [80, 100]  # Width of columns
         line_height = self.font_size * 2.5  # Adjust line height based on font size
-        if self.is_bold:
-            self.set_font(family=self.font_family, style="B", size=11)
-        else:
-            self.set_font(family=self.font_family, size=11)
+        if self.font_family is not None:
+            if self.is_bold:
+                self.set_font(family=self.font_family, style="B", size=11)
+            else:
+                self.set_font(family=self.font_family, size=11)
 
         self.set_fill_color(r=200, g=220, b=255)
 
@@ -243,7 +260,8 @@ class PDF(FPDF):
                 fill=True,
             )
         self.ln(line_height)
-        self.set_font(family=self.font_family, size=11)
+        if self.font_family is not None:
+            self.set_font(family=self.font_family, size=11)
 
         for row in data:
             # Save the current X position
@@ -267,7 +285,8 @@ class PDF(FPDF):
     def add_intro(self, intro_text: str) -> None:
         """Add introductory text to the PDF."""
         self.add_page()
-        self.set_font(family=self.font_family, size=12)
+        if self.font_family is not None:
+            self.set_font(family=self.font_family, size=12)
         self.set_text_color(r=0, g=0, b=0)
         self.multi_cell(w=0, h=6, text=intro_text)
         self.is_intro_page = False
