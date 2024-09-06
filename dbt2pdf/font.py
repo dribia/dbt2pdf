@@ -60,10 +60,9 @@ class Font(BaseModel):
 
 def find(family: str | None) -> Dict[FontStyle, Font]:
     """Find fonts in the system by family."""
-    paths = findSystemFonts()
     font_dict = {}
     if family is not None:
-        for font_path in paths:
+        for font_path in findSystemFonts():
             try:
                 font = Font(font_path)
                 if font.family.lower() == family.lower():
