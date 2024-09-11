@@ -8,7 +8,7 @@ from typing import Any
 
 from fpdf import FPDF
 
-from dbt2pdf.schemas import ExtractedDescription, ToCSchema
+from dbt2pdf.schemas import ExtractedDescription, ToCEntry, ToCSchema
 
 # FONTS_PATH = Path("fonts")
 TITLE = "DBT Documentation"
@@ -255,7 +255,7 @@ class PDF(FPDF):
         toc_entries = []
 
         for title, level, page, link in self.sections:
-            toc_entry = {"title": title, "level": level, "page": page, "link": link}
+            toc_entry = ToCEntry(title=title, level=level, page=page, link=link)
             toc_entries.append(toc_entry)
 
         toc_pages = round(len(toc_entries) / 34)
