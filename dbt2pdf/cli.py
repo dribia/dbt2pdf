@@ -118,45 +118,51 @@ def generate(
     temp_pdf.add_intro(intro_text_)
 
     if extracted_data:
-        temp_pdf.add_page_with_title("Models")
+        temp_pdf.add_page_with_title(title="Models", level=0)
         for model in extracted_data:
-            temp_pdf.subchapter_title(model.name)
+            temp_pdf.subchapter_title(title=model.name, level=1)
             temp_pdf.chapter_body(
                 body=model.description,
                 column_descriptions=model.column_descriptions,
             )
 
     if macro_data:
-        temp_pdf.add_page_with_title("Macros")
+        temp_pdf.add_page_with_title(title="Macros", level=0)
         for macro in macro_data:
-            temp_pdf.subchapter_title(macro.name)
+            temp_pdf.subchapter_title(title=macro.name, level=1)
             temp_pdf.chapter_body(
                 body=macro.description,
                 argument_descriptions=macro.argument_descriptions,
             )
 
+    toc_info = temp_pdf.create_toc()
+
     # Create the final PDF with the correct total page count
     final_pdf = PDF(title=title, authors=authors, logos=logos)
-    final_pdf.total_pages = temp_pdf.page_no()  # Set the total page count
+    final_pdf.total_pages = (
+        temp_pdf.page_no() + toc_info.toc_pages
+    )  # Set the total page count
     final_pdf.set_top_margin(10)
     final_pdf.set_left_margin(15)
     final_pdf.set_right_margin(15)
     final_pdf.page_title()
+    final_pdf.add_toc(toc_info)
+
     final_pdf.add_intro(intro_text_)
 
     if extracted_data:
-        final_pdf.add_page_with_title("Models")
+        final_pdf.add_page_with_title(title="Models", level=0)
         for model in extracted_data:
-            final_pdf.subchapter_title(model.name)
+            final_pdf.subchapter_title(title=model.name, level=1)
             final_pdf.chapter_body(
                 body=model.description,
                 column_descriptions=model.column_descriptions,
             )
 
     if macro_data:
-        final_pdf.add_page_with_title("Macros")
+        final_pdf.add_page_with_title(title="Macros", level=0)
         for macro in macro_data:
-            final_pdf.subchapter_title(macro.name)
+            final_pdf.subchapter_title(title=macro.name, level=1)
             final_pdf.chapter_body(
                 body=macro.description,
                 argument_descriptions=macro.argument_descriptions,

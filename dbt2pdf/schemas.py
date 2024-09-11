@@ -1,5 +1,7 @@
 """Data interface schemas."""
 
+from typing import Optional
+
 from pydantic import BaseModel
 
 from dbt2pdf.manifest import Column
@@ -27,3 +29,19 @@ class ExtractedMacro(BaseModel):
     name: str
     description: str
     argument_descriptions: list[ExtractedDescription] = []
+
+
+class ToCEntry(BaseModel):
+    """Table of Contents entry."""
+
+    title: str
+    level: int
+    page: int
+    link: Optional[int] = None
+
+
+class ToCSchema(BaseModel):
+    """Schema for the Table of Contents."""
+
+    toc_entries: list[ToCEntry]
+    toc_pages: int
