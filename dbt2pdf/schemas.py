@@ -1,7 +1,5 @@
 """Data interface schemas."""
 
-from typing import Optional
-
 from pydantic import BaseModel
 
 from dbt2pdf.manifest import Column
@@ -37,7 +35,6 @@ class ToCEntry(BaseModel):
     title: str
     level: int
     page: int
-    link: Optional[int] = None
 
 
 class ToCSchema(BaseModel):

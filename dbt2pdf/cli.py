@@ -146,7 +146,9 @@ def generate(
     final_pdf.set_left_margin(15)
     final_pdf.set_right_margin(15)
     final_pdf.page_title()
-    final_pdf.add_toc(toc_info)
+
+    # Add table of contents with links.
+    final_pdf.add_toc(pdf=final_pdf, toc_info=toc_info)
 
     final_pdf.add_intro(intro_text_)
 

@@ -54,9 +54,9 @@ class PDF(FPDF):
         #     family="Roboto", style="I", fname=str(FONTS_PATH / "Roboto-Italic.ttf")
         # )
 
-    def add_section_toc(self, title, link, level=0):
-        """Adds a section with a title, its page number and link."""
-        self.sections.append((title, level, self.page_no(), link))
+    def add_section_toc(self, title, level=0):
+        """Adds a section with a title, its level and page number."""
+        self.sections.append((title, level, self.page_no()))
 
     def header(self) -> None:
         """Add a header to the PDF."""
@@ -140,12 +140,12 @@ class PDF(FPDF):
         self.ln(5)
         # self.set_font(family="Roboto", style="B", size=16)
         self.set_text_color(r=54, g=132, b=235)
-        link = self.add_link()
+        self.start_section(title)
         self.cell(w=0, h=10, text=title, border=0, align="L")
         self.ln(10)
 
         if level is not None:
-            self.add_section_toc(title=title, level=level, link=link)
+            self.add_section_toc(title=title, level=level)
 
     def chapter_body(
         self,
@@ -237,10 +237,10 @@ class PDF(FPDF):
         """Add a page with title."""
         self.ln(10)
         self.is_intro_page = False
-        link = self.add_link()
+        self.start_section(title)
         self.chapter_title(title)
         if level is not None:
-            self.add_section_toc(title=title, level=level, link=link)
+            self.add_section_toc(title=title, level=level)
 
     def add_intro(self, intro_text: str) -> None:
         """Add introductory text to the PDF."""
@@ -254,15 +254,15 @@ class PDF(FPDF):
         """Creates table of content entries and estimates the num. of pages required."""
         toc_entries = []
 
-        for title, level, page, link in self.sections:
-            toc_entry = ToCEntry(title=title, level=level, page=page, link=link)
+        for title, level, page in self.sections:
+            toc_entry = ToCEntry(title=title, level=level, page=page)
             toc_entries.append(toc_entry)
 
         toc_pages = round(len(toc_entries) / 34)
 
         return ToCSchema(toc_entries=toc_entries, toc_pages=toc_pages)
 
-    def add_toc(self, toc_info: ToCSchema) -> None:
+    def add_toc(self, pdf, toc_info: ToCSchema) -> None:
         """Generates the table of contents on a separate page."""
         self.add_page()
         self.chapter_title("Table of Contents")
@@ -274,7 +274,9 @@ class PDF(FPDF):
             title = entry.title
             level = entry.level
             page = entry.page + toc_info.toc_pages
-            # link = entry.link
+            link = pdf.add_link()
+
+            self.set_link(link, page=page)
 
             # self.set_font(family="Roboto", size=12)
             indent = 10 * level + 0.001
@@ -299,20 +301,8 @@ class PDF(FPDF):
 
             right_text_width = self.get_string_width(right_text)
 
-            self.cell(
-                left_text_width,
-                cell_height,
-                left_text,
-                align="L",
-                # link=link
-            )
+            self.cell(left_text_width, cell_height, left_text, align="L", link=link)
             self.cell(dot_space_width, cell_height, dots, align="C")
-            self.cell(
-                right_text_width,
-                cell_height,
-                right_text,
-                align="R",
-                # link=link
-            )
+            self.cell(right_text_width, cell_height, right_text, align="R", link=link)
 
             self.ln(7)
