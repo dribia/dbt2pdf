@@ -301,8 +301,20 @@ class PDF(FPDF):
 
             right_text_width = self.get_string_width(right_text)
 
-            self.cell(left_text_width, cell_height, left_text, align="L", link=link)
+            self.cell(
+                left_text_width,
+                cell_height,
+                left_text,
+                align="L",
+                link=link,  # type: ignore[arg-type]
+            )
             self.cell(dot_space_width, cell_height, dots, align="C")
-            self.cell(right_text_width, cell_height, right_text, align="R", link=link)
+            self.cell(
+                right_text_width,
+                cell_height,
+                right_text,
+                align="R",
+                link=link,  # type: ignore[arg-type]
+            )
 
             self.ln(7)
