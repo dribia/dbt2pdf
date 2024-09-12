@@ -8,7 +8,7 @@ from typing import Any
 
 from fpdf import FPDF
 
-from dbt2pdf.schemas import ExtractedDescription
+from dbt2pdf.schemas import ExtractedDescription, ToCEntry, ToCSchema
 
 # FONTS_PATH = Path("fonts")
 TITLE = "DBT Documentation"
@@ -40,9 +40,11 @@ class PDF(FPDF):
         self.total_pages: int | None = None
         self.set_font("Times")
         self.logos = logos
-
         if len(logos) > 2:
             raise ValueError("Only two logos at maximum are allowed.")
+
+        # Keep track sections for ToC
+        self.sections: list = []
 
         # self.add_font(family="Roboto", fname=str(FONTS_PATH / "Roboto-Regular.ttf"))
         # self.add_font(
@@ -51,6 +53,10 @@ class PDF(FPDF):
         # self.add_font(
         #     family="Roboto", style="I", fname=str(FONTS_PATH / "Roboto-Italic.ttf")
         # )
+
+    def add_section_toc(self, title, level=0):
+        """Adds a section with a title, its level and page number."""
+        self.sections.append((title, level, self.page_no()))
 
     def header(self) -> None:
         """Add a header to the PDF."""
@@ -129,13 +135,17 @@ class PDF(FPDF):
         self.cell(w=0, h=10, text=title, border=0, align="L")
         self.ln(7)
 
-    def subchapter_title(self, title: str) -> None:
+    def subchapter_title(self, title: str, level: int | None) -> None:
         """Add a chapter title to the PDF."""
         self.ln(5)
         # self.set_font(family="Roboto", style="B", size=16)
         self.set_text_color(r=54, g=132, b=235)
+        self.start_section(title)
         self.cell(w=0, h=10, text=title, border=0, align="L")
         self.ln(10)
+
+        if level is not None:
+            self.add_section_toc(title=title, level=level)
 
     def chapter_body(
         self,
@@ -223,11 +233,14 @@ class PDF(FPDF):
             row_height = self.get_y() - y_start
             self.set_y(y_start + row_height)
 
-    def add_page_with_title(self, title: str) -> None:
+    def add_page_with_title(self, title: str, level: int | None) -> None:
         """Add a page with title."""
         self.ln(10)
         self.is_intro_page = False
+        self.start_section(title)
         self.chapter_title(title)
+        if level is not None:
+            self.add_section_toc(title=title, level=level)
 
     def add_intro(self, intro_text: str) -> None:
         """Add introductory text to the PDF."""
@@ -236,3 +249,72 @@ class PDF(FPDF):
         self.set_text_color(r=0, g=0, b=0)
         self.multi_cell(w=0, h=6, text=intro_text)
         self.is_intro_page = False
+
+    def create_toc(self) -> ToCSchema:
+        """Creates table of content entries and estimates the num. of pages required."""
+        toc_entries = []
+
+        for title, level, page in self.sections:
+            toc_entry = ToCEntry(title=title, level=level, page=page)
+            toc_entries.append(toc_entry)
+
+        toc_pages = round(len(toc_entries) / 34)
+
+        return ToCSchema(toc_entries=toc_entries, toc_pages=toc_pages)
+
+    def add_toc(self, toc_info: ToCSchema) -> None:
+        """Generates the table of contents on a separate page."""
+        self.add_page()
+        self.chapter_title("Table of Contents")
+        self.set_text_color(r=0, g=0, b=0)
+        self.ln(5)
+
+        # List all sections with page numbers
+        for entry in toc_info.toc_entries:
+            title = entry.title
+            level = entry.level
+            page = entry.page + toc_info.toc_pages
+            link = self.add_link()
+
+            self.set_link(link, page=page)
+
+            # self.set_font(family="Roboto", size=12)
+            indent = 10 * level + 0.001
+            self.cell(indent)
+
+            cell_height = 10
+            page_width = self.w - 20
+
+            left_text = f"{title}"
+            right_text = f"{page}"
+
+            left_text_width = self.get_string_width(left_text)
+            right_text_width = self.get_string_width(right_text)
+            if level != 0:
+                dot_space_width = (
+                    page_width - left_text_width - right_text_width - 10 - 10 * level
+                )
+            else:
+                dot_space_width = page_width - left_text_width - right_text_width - 10
+
+            dots = "." * (int(dot_space_width / self.get_string_width(".")) - 5)
+
+            right_text_width = self.get_string_width(right_text)
+
+            self.cell(
+                left_text_width,
+                cell_height,
+                left_text,
+                align="L",
+                link=link,  # type: ignore[arg-type]
+            )
+            self.cell(dot_space_width, cell_height, dots, align="C")
+            self.cell(
+                right_text_width,
+                cell_height,
+                right_text,
+                align="R",
+                link=link,  # type: ignore[arg-type]
+            )
+
+            self.ln(7)
