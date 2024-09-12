@@ -148,7 +148,7 @@ def generate(
     final_pdf.page_title()
 
     # Add table of contents with links.
-    final_pdf.add_toc(pdf=final_pdf, toc_info=toc_info)
+    final_pdf.add_toc(toc_info=toc_info)
 
     final_pdf.add_intro(intro_text_)
 

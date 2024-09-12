@@ -262,7 +262,7 @@ class PDF(FPDF):
 
         return ToCSchema(toc_entries=toc_entries, toc_pages=toc_pages)
 
-    def add_toc(self, pdf, toc_info: ToCSchema) -> None:
+    def add_toc(self, toc_info: ToCSchema) -> None:
         """Generates the table of contents on a separate page."""
         self.add_page()
         self.chapter_title("Table of Contents")
@@ -274,7 +274,7 @@ class PDF(FPDF):
             title = entry.title
             level = entry.level
             page = entry.page + toc_info.toc_pages
-            link = pdf.add_link()
+            link = self.add_link()
 
             self.set_link(link, page=page)
 
