@@ -1254,13 +1254,13 @@ typing-extensions = ">=3.7.4.3"
 
 [[package]]
 name = "types-fpdf2"
-version = "2.7.9.20240813"
+version = "2.7.9.20240919"
 description = "Typing stubs for fpdf2"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "types-fpdf2-2.7.9.20240813.tar.gz", hash = "sha256:740f3a6f325d12b8964d00b73cb4d08e0b6eac2b5f0772dae4b11816b69792b6"},
-    {file = "types_fpdf2-2.7.9.20240813-py3-none-any.whl", hash = "sha256:600d2133945aee11102737958a55d50d94923e7e15c407357603642c34ca2d26"},
+    {file = "types-fpdf2-2.7.9.20240919.tar.gz", hash = "sha256:8432cb2f4052e0e3f0893967a563f41c529b5ad371361eff2556310892d1110b"},
+    {file = "types_fpdf2-2.7.9.20240919-py3-none-any.whl", hash = "sha256:382e6c7d2872b031f8d6b187680100734e6e865c44986c38c03c63d9f08151aa"},
 ]
 
 [package.dependencies]
