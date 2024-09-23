@@ -139,9 +139,7 @@ def generate(
 
     # Create the final PDF with the correct total page count
     final_pdf = PDF(title=title, authors=authors, logos=logos)
-    final_pdf.total_pages = (
-        temp_pdf.page_no() + toc_info.toc_pages
-    )  # Set the total page count
+    final_pdf.total_pages = temp_pdf.page_no() + toc_info.pages
     final_pdf.set_top_margin(10)
     final_pdf.set_left_margin(15)
     final_pdf.set_right_margin(15)
@@ -149,7 +147,6 @@ def generate(
 
     # Add table of contents with links.
     final_pdf.add_toc(toc_info=toc_info)
-
     final_pdf.add_intro(intro_text_)
 
     if extracted_data:
