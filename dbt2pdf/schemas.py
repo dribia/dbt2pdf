@@ -29,7 +29,7 @@ class ExtractedMacro(BaseModel):
     argument_descriptions: list[ExtractedDescription] = []
 
 
-class ToCEntry(BaseModel):
+class TableOfContentsEntry(BaseModel):
     """Table of Contents entry."""
 
     title: str
@@ -37,8 +37,8 @@ class ToCEntry(BaseModel):
     page: int
 
 
-class ToCSchema(BaseModel):
+class TableOfContents(BaseModel):
     """Schema for the Table of Contents."""
 
-    toc_entries: list[ToCEntry]
-    toc_pages: int
+    entries: list[TableOfContentsEntry]
+    pages: int
