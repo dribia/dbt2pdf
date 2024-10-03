@@ -1,4 +1,4 @@
-The `dbt2pdf` package provides a command-line interface (CLI) to convert DBT models to PDF files.
+The `dbt2pdf` package provides a command-line interface (CLI) to convert dbt models to PDF files.
 
 To view the available commands and full usage documentation, run:
 ```commandline
@@ -10,11 +10,11 @@ To view a given command usage documentation, the help flag can be used:
 dbt2pdf <command> --help
 ```
 
-The only command available is `generate`, which converts DBT models to PDF files.
+The only command available is `generate`, which converts dbt models to PDF files.
 
 ## Generate PDF files
 
-To generate PDF files from DBT models, you can use the `generate` command:
+To generate PDF files from dbt models, you can use the `generate` command:
 ```commandline
 dbt2pdf generate
 ```
@@ -28,11 +28,11 @@ dbt2pdf generate
 
 There are many options available to customize the PDF files generated. The following sections describe the available options.
 
-### Define the DBT manifest file path
+### Define the dbt manifest file path
 !!! Warning
     This is a required option. If not provided, the command will fail.
 
-To define the DBT manifest file path, you can use the `manifest-path` option:
+To define the dbt manifest file path, you can use the `manifest-path` option:
 ```commandline
 dbt2pdf generate --manifest-path "path/to/manifest.json"
 ```
@@ -40,7 +40,7 @@ dbt2pdf generate --manifest-path "path/to/manifest.json"
 ### Set title for the PDF
 To set the title for the PDF, you can use the `title` option:
 ```commandline
-dbt2pdf generate --title "My Title for DBT Documentation"
+dbt2pdf generate --title "My Title for dbt Documentation"
 ```
 
 !!! Note
