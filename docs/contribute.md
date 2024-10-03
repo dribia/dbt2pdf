@@ -35,19 +35,31 @@ In order to contribute, the first step is to clone yourself the code:
 ```shell
 git clone https://github.com/dribia/dbt2pdf.git
 ```
-Then, you can step into the project's root and, assuming that you have both [Poetry](https://python-poetry.org/) and
-[pre-commit](https://pre-commit.com/) installed, run:
+
+Poetry is the best way to interact with this project, to install it, follow the official [Poetry installation guide](https://python-poetry.org/docs/#installation).
+With poetry installed, one can install the project dependencies with:
 ```shell
-poetry install && pre-commit install
+poetry install
 ```
 
 Now you should be ready to start coding and prepare your [pull request](https://github.com/dribia/dbt2pdf/pulls).
 
-Remember that you can run linting and tests locally with:
+!!! Warning
+    Please, make sure to run:
 
-```shell
-sh scripts/lint.sh
-sh scripts/test.sh
-```
+    1. The project unit tests
+    ```shell
+    make test-unit
+    ```
+    2. The linters (`ruff` and `mypy`):
+    ```shell
+    make lint
+    ```
+    3. Apply all code formatting:
+    ```shell
+    make format
+    ```
 
-Happy coding!
+    before submitting your pull request.
+
+Happy coding! 🎉
