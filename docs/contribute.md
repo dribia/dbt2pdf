@@ -17,8 +17,7 @@
 ## Mantainers
 dbt2PDF is maintained by:
 
-* Albert Iribarne - <iribarne@dribia.com>
-*
+* Dribia Code - <code@dribia.com>
 
 ## Issues
 Questions, feature requests and bug reports are all welcome as [discussions or issues](https://github.com/dribia/dbt2pdf/issues).
