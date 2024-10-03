@@ -14,8 +14,7 @@ edit_uri: ''
 nav:
   - Welcome to dbt2PDF: index.md
   - Installation: install.md
-  - Usage:
-    - usage/introduction.md
+  - Usage: usage.md
   - Contribute: contribute.md
 extra_css:
 - stylesheets/extra.css
