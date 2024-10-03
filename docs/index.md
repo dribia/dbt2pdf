@@ -44,7 +44,7 @@
 </p>
 
 <p style="text-align: center;">
-    <em>Tagline for dbt2PDF package.</em>
+    <em>A CLI to convert dbt models to PDFs.</em>
 </p>
 
 ---
@@ -55,12 +55,22 @@
 
 ---
 
-dbt2PDF provides a ...
+dbt2PDF provides a command-line interface (CLI) to convert dbt models to PDF files.
 
 ## Key features
 
-*
+* **CLI**: An easy to use command-line interface (CLI) that can be used to convert dbt models to PDF files.
+* **Customizable**: Allows you to customize certain aspects of the output file.
+* **Easy to use**: Easy to use and can be integrated into your dbt workflow.
+* **Open source**: Open source and free to use.
 
 ## Example
 
-```
+```commandline
+dbt2pdf generate \
+  --manifest-path ./manifest.json \
+  --title "DBT Documentation" \
+  --add-author john@example.com \
+  --add-author doe@example.com \
+  output.pdf
+``
