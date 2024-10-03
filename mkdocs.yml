@@ -1,0 +1,32 @@
+site_name: dbt2PDF
+site_description: Python package to convert dbt models to PDF files.
+strict: true
+
+theme:
+  name: material
+  custom_dir: docs/theme
+  language: en
+  favicon: img/dribia-favicon-120x120.png
+  logo: img/logo_dribia_d_blanc.png
+repo_name: dribia/dbt2pdf
+repo_url: https://github.com/dribia/dbt2pdf
+edit_uri: ''
+nav:
+  - Welcome to dbt2PDF: index.md
+  - Installation: install.md
+  - Usage:
+    - usage/introduction.md
+  - Contribute: contribute.md
+extra_css:
+- stylesheets/extra.css
+
+markdown_extensions:
+- markdown.extensions.codehilite:
+    guess_lang: false
+- toc:
+    permalink: 🔗
+- codehilite
+- admonition
+- pymdownx.details
+- pymdownx.superfences
+- pymdownx.tabbed
