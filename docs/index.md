@@ -55,7 +55,7 @@
 
 ---
 
-dbt2PDF provides a command-line interface (CLI) to convert dbt models to PDF files.
+dbt2pdf provides a command-line interface (CLI) to convert dbt models to PDF files.
 
 ## Key features
 
@@ -73,4 +73,4 @@ dbt2pdf generate \
   --add-author john@example.com \
   --add-author doe@example.com \
   output.pdf
-``
+```

@@ -1,4 +1,4 @@
-site_name: dbt2PDF
+site_name: dbt2pdf
 site_description: Python package to convert dbt models to PDF files.
 strict: true
 
@@ -12,7 +12,7 @@ repo_name: dribia/dbt2pdf
 repo_url: https://github.com/dribia/dbt2pdf
 edit_uri: ''
 nav:
-  - Welcome to dbt2PDF: index.md
+  - Welcome to dbt2pdf: index.md
   - Installation: install.md
   - Usage: usage.md
   - Contribute: contribute.md

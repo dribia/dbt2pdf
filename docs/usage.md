@@ -79,3 +79,9 @@ dbt2pdf generate \
  --add-logo "path/to/logo1.png"
  --add-logo "path/to/logo2.png"
 ```
+
+!!! Warning
+    There is a maximum of two logos that can be included.
+    The first one in the command line will be bigger and displayed on top of
+    the title page, whereas the second one will be smaller and displayed under
+    the title on the title page.
