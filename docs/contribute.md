@@ -4,7 +4,7 @@
     <a href="https://dribia.github.io/dbt2pdf">
         <img
             src="../img/logo_dribia_blau_cropped.png"
-            alt="dbt2PDF"
+            alt="dbt2pdf"
             style="display: block; margin-left: auto; margin-right: auto; width: 40%;"
         >
     </a>
@@ -15,7 +15,7 @@
 </p>
 
 ## Mantainers
-dbt2PDF is maintained by:
+dbt2pdf is maintained by:
 
 * Dribia Code - <code@dribia.com>
 
@@ -27,7 +27,7 @@ Please note which version of the library are you using whenever reporting a bug.
 python -c "import dbt2pdf; print(dbt2pdf.__version__)"
 ```
 
-It would be very useful too to know which OS and Python version are your running dbt2PDF from.
+It would be very useful too to know which OS and Python version are your running dbt2pdf from.
 
 ## Contribute
 In order to contribute, the first step is to clone yourself the code:
