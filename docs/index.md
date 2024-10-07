@@ -73,4 +73,4 @@ dbt2pdf generate \
   --add-author john@example.com \
   --add-author doe@example.com \
   output.pdf
-``
+```
