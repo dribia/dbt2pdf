@@ -8,7 +8,7 @@ from typing import Any
 
 from fpdf import FPDF
 
-from dbt2pdf.schemas import ExtractedDescription, ToCEntry, ToCSchema
+from dbt2pdf.schemas import ExtractedDescription, TableOfContents, TableOfContentsEntry
 
 # FONTS_PATH = Path("fonts")
 TITLE = "DBT Documentation"
@@ -250,19 +250,17 @@ class PDF(FPDF):
         self.multi_cell(w=0, h=6, text=intro_text)
         self.is_intro_page = False
 
-    def create_toc(self) -> ToCSchema:
+    def create_toc(self) -> TableOfContents:
         """Creates table of content entries and estimates the num. of pages required."""
-        toc_entries = []
+        entries = []
 
         for title, level, page in self.sections:
-            toc_entry = ToCEntry(title=title, level=level, page=page)
-            toc_entries.append(toc_entry)
+            entry = TableOfContentsEntry(title=title, level=level, page=page)
+            entries.append(entry)
 
-        toc_pages = round(len(toc_entries) / 34)
+        return TableOfContents(entries=entries, pages=round(len(entries) / 34))
 
-        return ToCSchema(toc_entries=toc_entries, toc_pages=toc_pages)
-
-    def add_toc(self, toc_info: ToCSchema) -> None:
+    def add_toc(self, toc_info: TableOfContents) -> None:
         """Generates the table of contents on a separate page."""
         self.add_page()
         self.chapter_title("Table of Contents")
@@ -270,10 +268,10 @@ class PDF(FPDF):
         self.ln(5)
 
         # List all sections with page numbers
-        for entry in toc_info.toc_entries:
+        for entry in toc_info.entries:
             title = entry.title
             level = entry.level
-            page = entry.page + toc_info.toc_pages
+            page = entry.page + toc_info.pages
             link = self.add_link()
 
             self.set_link(link, page=page)
