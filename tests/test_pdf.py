@@ -213,7 +213,7 @@ class TestPDF:
         with mock.patch.object(pdf, "cell") as mock_cell:
             assert pdf.is_intro_page is True
             pdf.add_page()
-            pdf.add_page_with_title("Test Chapter")
+            pdf.add_page_with_title("Test Chapter", level=0)
             assert pdf.is_intro_page is False
 
             mock_cell.assert_called_once()
@@ -304,6 +304,6 @@ class TestPDF:
 
         with mock.patch.object(pdf, "cell") as mock_cell:
             pdf.add_page()
-            pdf.subchapter_title(title="Subchapter")
+            pdf.subchapter_title(title="Subchapter", level=1)
 
             assert mock_cell.call_count == 1
