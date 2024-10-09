@@ -60,8 +60,7 @@ class PDF(FPDF):
                 self.set_font("Times")
                 self.bold_style = "B"
                 warnings.warn(
-                    message=f"No fonts found with family '{font_family}' "
-                    f"having styles the supported styles. Setting font to default.",
+                    message=f"No fonts having supported styles found with family '{font_family}'. Setting font to default.",
                     category=NoFontFamily,
                     stacklevel=1,
                 )
