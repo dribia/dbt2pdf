@@ -68,7 +68,7 @@ dbt2pdf provides a command-line interface (CLI) to convert dbt models to PDF fil
 
 ```commandline
 dbt2pdf generate \
-  --manifest-path ./manifest.json \
+  --manifest-path "path/to/manifest.json" \
   --title "DBT Documentation" \
   --add-author john@example.com \
   --add-author doe@example.com \
