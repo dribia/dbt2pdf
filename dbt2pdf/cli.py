@@ -43,6 +43,13 @@ def generate(
             help="Add macros from the given package to the generated document.",
         ),
     ] = None,
+    font_family: Annotated[
+        Optional[str],
+        Option(
+            "--font-family",
+            help="Font family to use in the PDF document.",
+        ),
+    ] = None,
     logos: Annotated[
         Optional[list[Path]],
         Option(
@@ -109,8 +116,12 @@ def generate(
         "includes information about macros, their descriptions, and arguments."
     )
 
+    # font_family has to be a string, so convert it here to an empty one if None.
+    if font_family is None:
+        font_family = ""
+
     # Create a temporary PDF to count the number of pages
-    temp_pdf = PDF(title=title, authors=authors, logos=logos)
+    temp_pdf = PDF(title=title, authors=authors, logos=logos, font_family=font_family)
     temp_pdf.set_top_margin(10)
     temp_pdf.set_left_margin(15)
     temp_pdf.set_right_margin(15)
@@ -138,7 +149,7 @@ def generate(
     toc_info = temp_pdf.create_toc()
 
     # Create the final PDF with the correct total page count
-    final_pdf = PDF(title=title, authors=authors, logos=logos)
+    final_pdf = PDF(title=title, authors=authors, logos=logos, font_family=font_family)
     final_pdf.total_pages = temp_pdf.page_no() + toc_info.pages
     final_pdf.set_top_margin(10)
     final_pdf.set_left_margin(15)
