@@ -5,6 +5,7 @@ from unittest import mock
 
 import pytest
 
+from dbt2pdf.custom_warning import NoFontFamily
 from dbt2pdf.pdf import PDF
 from dbt2pdf.schemas import ExtractedDescription
 
@@ -70,6 +71,16 @@ class TestPDF:
         font_family = ""
 
         with pytest.raises(ValueError, match="Only two logos at maximum are allowed."):
+            PDF(title=title, authors=authors, logos=logos, font_family=font_family)
+
+    def test_pdf_initialization_invalid_font_family(self):
+        """Test PDF class initialization with invalid font family."""
+        title = "Test Document"
+        authors = ["Author One", "Author Two"]
+        logos = [Path("/path/to/logo1.png"), Path("/path/to/logo2.png")]
+        font_family = "Patata"
+
+        with pytest.raises(NoFontFamily):
             PDF(title=title, authors=authors, logos=logos, font_family=font_family)
 
     def test_header_first_page(self):
