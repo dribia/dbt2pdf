@@ -50,8 +50,9 @@ class TestPDF:
         title = "Test Document"
         authors = ["Author One", "Author Two"]
         logos = [Path("/path/to/logo1.png"), Path("/path/to/logo2.png")]
+        font_family = ""
 
-        pdf = PDF(title=title, authors=authors, logos=logos)
+        pdf = PDF(title=title, authors=authors, logos=logos, font_family=font_family)
 
         assert pdf.title == title
         assert pdf.authors == authors
@@ -66,13 +67,16 @@ class TestPDF:
             Path("/path/to/logo2.png"),
             Path("/path/to/logo3.png"),
         ]
+        font_family = ""
 
         with pytest.raises(ValueError, match="Only two logos at maximum are allowed."):
-            PDF(title=title, authors=authors, logos=logos)
+            PDF(title=title, authors=authors, logos=logos, font_family=font_family)
 
     def test_header_first_page(self):
         """Test header when it is first page."""
-        pdf = PDF(title="Test Document", authors=["Author One"], logos=[])
+        pdf = PDF(
+            title="Test Document", authors=["Author One"], logos=[], font_family=""
+        )
 
         pdf.is_first_page = True
         with mock.patch.object(pdf, "cell") as mock_cell:
@@ -82,7 +86,9 @@ class TestPDF:
 
     def test_header_not_first_page(self):
         """Test header when it is not first page."""
-        pdf = PDF(title="Test Document", authors=["Author One"], logos=[])
+        pdf = PDF(
+            title="Test Document", authors=["Author One"], logos=[], font_family=""
+        )
 
         pdf.add_page()
         pdf.is_first_page = False
@@ -100,7 +106,9 @@ class TestPDF:
 
     def test_footer_first_page(self):
         """Test footer when it is first page."""
-        pdf = PDF(title="Test Document", authors=["Author One"], logos=[])
+        pdf = PDF(
+            title="Test Document", authors=["Author One"], logos=[], font_family=""
+        )
 
         pdf.is_first_page = True
         with mock.patch.object(pdf, "set_text_color") as mock_set_text_color:
@@ -110,7 +118,9 @@ class TestPDF:
 
     def test_footer_intro_page(self):
         """Test footer when it is intro page."""
-        pdf = PDF(title="Test Document", authors=["Author One"], logos=[])
+        pdf = PDF(
+            title="Test Document", authors=["Author One"], logos=[], font_family=""
+        )
 
         pdf.is_intro_page = True
         with mock.patch.object(pdf, "set_text_color") as mock_set_text_color:
@@ -120,7 +130,9 @@ class TestPDF:
 
     def test_footer_not_first_intro_page(self):
         """Test footer when it is not first page or intro page."""
-        pdf = PDF(title="Test Document", authors=["Author One"], logos=[])
+        pdf = PDF(
+            title="Test Document", authors=["Author One"], logos=[], font_family=""
+        )
 
         pdf.is_first_page = False
         pdf.is_intro_page = False
@@ -134,6 +146,7 @@ class TestPDF:
             title="Test Document",
             authors=["Author One"],
             logos=logos,
+            font_family="",
         )
 
         pdf_w_logos.is_first_page = False
@@ -149,6 +162,7 @@ class TestPDF:
             title="Test Document",
             authors=["Author One"],
             logos=[Path("/path/to/logo1.png")],
+            font_family="",
         )
 
         pdf1.is_first_page = False
@@ -162,6 +176,7 @@ class TestPDF:
             title="Test Document",
             authors=["Author One"],
             logos=[Path("/path/to/logo1.png"), Path("/path/to/logo2.png")],
+            font_family="",
         )
 
         pdf2.is_first_page = False
@@ -177,6 +192,7 @@ class TestPDF:
             title="Test Document",
             authors=["Author One"],
             logos=[],
+            font_family="",
         )
         pdf.page_title()
 
@@ -189,6 +205,7 @@ class TestPDF:
             title="Test Document",
             authors=["Author One"],
             logos=[Path("/path/to/logo1.png")],
+            font_family="",
         )
         with mock.patch.object(pdf1, "image") as mock_image:
             pdf1.page_title()
@@ -198,6 +215,7 @@ class TestPDF:
             title="Test Document",
             authors=["Author One"],
             logos=[Path("/path/to/logo1.png"), Path("/path/to/logo1.png")],
+            font_family="",
         )
         with mock.patch.object(pdf2, "image") as mock_image:
             pdf2.page_title()
@@ -209,6 +227,7 @@ class TestPDF:
             title="Test Document",
             authors=["Author One"],
             logos=[],
+            font_family="",
         )
         with mock.patch.object(pdf, "cell") as mock_cell:
             assert pdf.is_intro_page is True
@@ -224,6 +243,7 @@ class TestPDF:
             title="Test Document",
             authors=["Author One"],
             logos=[],
+            font_family="",
         )
         with mock.patch.object(pdf, "multi_cell") as mock_multi_cell:
             assert pdf.is_intro_page is True
@@ -238,6 +258,7 @@ class TestPDF:
             title="Test Document",
             authors=["Author One"],
             logos=[],
+            font_family="",
         )
 
         with mock.patch.object(pdf1, "cell") as mock_cell:
@@ -258,6 +279,7 @@ class TestPDF:
             title="Test Document",
             authors=["Author One"],
             logos=[],
+            font_family="",
         )
 
         with mock.patch.object(pdf2, "cell") as mock_cell:
@@ -275,6 +297,7 @@ class TestPDF:
             title="Test Document",
             authors=["Author One"],
             logos=[],
+            font_family="",
         )
 
         with mock.patch.object(pdf, "create_table") as mock_create_table:
@@ -300,6 +323,7 @@ class TestPDF:
             title="Test Document",
             authors=["Author One"],
             logos=[],
+            font_family="",
         )
 
         with mock.patch.object(pdf, "cell") as mock_cell:
