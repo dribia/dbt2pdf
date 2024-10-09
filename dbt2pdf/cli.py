@@ -117,8 +117,11 @@ def generate(
         "includes information about macros, their descriptions, and arguments."
     )
 
-    # Create a temporary PDF to count the number of pages
+    # font_family has to be a string, so convert it here to an empty one if None.
+    if font_family is None:
+        font_family = ""
 
+    # Create a temporary PDF to count the number of pages
     temp_pdf = PDF(title=title, authors=authors, logos=logos, font_family=font_family)
     temp_pdf.set_top_margin(10)
     temp_pdf.set_left_margin(15)

@@ -101,10 +101,10 @@ class Font(BaseModel):
         return Font(path=path, family=family, style=FontStyle[style.upper()])
 
 
-def find(family: str | None) -> Dict[FontStyle, Font]:
+def find(family: str) -> Dict[FontStyle, Font]:
     """Find fonts in the system by family."""
     font_dict = {}
-    if family is not None:
+    if family != "":
         for font_path in findSystemFonts():
             try:
                 font = Font.get_font(font_path)

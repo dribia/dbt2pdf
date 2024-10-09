@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from datetime import datetime
 from pathlib import Path
-from typing import Any
+from typing import Any, Literal
 
 from fpdf import FPDF
 
@@ -23,7 +23,7 @@ class PDF(FPDF):
         title: str,
         authors: list[str],
         logos: list[Path],
-        font_family: str | None,
+        font_family: str,
         **kwargs: Any,
     ) -> None:
         """Initialize the PDF with custom margins and auto page breaks.
@@ -49,16 +49,19 @@ class PDF(FPDF):
 
         # Find Font objects by font_family
         self.font_family = font_family
-        self.bold_style = ""
-        if self.font_family is not None:
+        self.bold_style: Literal["", "B"] = ""
+
+        if self.font_family != "":
             fonts = find(font_family)
 
             for _, font in fonts.items():
                 if font.style.value == "B":
-                    self.bold_style = font.style.value
+                    self.bold_style = "B"
+                else:
+                    self.bold_style = ""
 
                 self.add_font(
-                    family=font.family, style=font.style.value, fname=font.path
+                    family=font.family, style=self.bold_style, fname=font.path
                 )
 
             self.set_font(family=font_family, style=self.bold_style)
