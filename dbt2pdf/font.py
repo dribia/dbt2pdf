@@ -118,9 +118,4 @@ def find(family: str) -> Dict[FontStyle, Font]:
             except Exception as e:
                 logger.debug(f"Error processing font at {font_path}: {e}")
 
-    if not font_dict:
-        raise ValueError(
-            f"No fonts found with family '{family}' having styles '', 'B', or 'I'."
-        )
-
     return font_dict

@@ -2,12 +2,14 @@
 
 from __future__ import annotations
 
+import warnings
 from datetime import datetime
 from pathlib import Path
 from typing import Any, Literal
 
 from fpdf import FPDF
 
+from dbt2pdf.custom_warning import NoFontFamily, NoRegularStyle
 from dbt2pdf.font import find
 from dbt2pdf.schemas import ExtractedDescription, TableOfContents, TableOfContentsEntry
 
@@ -53,22 +55,40 @@ class PDF(FPDF):
 
         if self.font_family != "":
             fonts = find(font_family)
-            if not any(font.style.value == "" for _, font in fonts.items()):
-                raise ValueError(
-                    "No Regular style for the picked font. "
-                    "The font you pick needs to have at least a Regular style."
-                )
 
-            for _, font in fonts.items():
-                # Add bold type font style if available.
-                if font.style.value == "B":
-                    self.bold_style = "B"
-                    self.add_font(
-                        family=self.font_family, style=self.bold_style, fname=font.path
-                    )
-                # Add regular type font style if available.
-                if font.style.value == "":
-                    self.add_font(family=self.font_family, style="", fname=font.path)
+            if not fonts:
+                self.set_font("Times")
+                self.bold_style = "B"
+                warnings.warn(
+                    message=f"No fonts found with family '{font_family}' "
+                    f"having styles '', 'B', or 'I'. Setting font to default.",
+                    category=NoFontFamily,
+                    stacklevel=1,
+                )
+            elif not any(font.style.value == "" for _, font in fonts.items()):
+                self.set_font("Times")
+                self.bold_style = "B"
+                warnings.warn(
+                    message="No Regular style for the picked font. Setting font to default.",
+                    category=NoRegularStyle,
+                    stacklevel=1,
+                )
+            else:
+                for _, font in fonts.items():
+                    # Add regular font style.
+                    if font.style.value == "":
+                        self.add_font(
+                            family=self.font_family, style="", fname=font.path
+                        )
+
+                    # Add bold style if available.
+                    if font.style.value == "B":
+                        self.bold_style = "B"
+                        self.add_font(
+                            family=self.font_family,
+                            style=self.bold_style,
+                            fname=font.path,
+                        )
         else:
             self.set_font("Times")
             self.bold_style = "B"
