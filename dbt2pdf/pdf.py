@@ -156,6 +156,7 @@ class PDF(FPDF):
         self.cell(
             w=0, h=10, text=datetime.today().strftime("%Y-%m-%d"), border=0, align="C"
         )
+        self.ln(7)
         for author in self.authors:
             self.ln(7)
             self.cell(w=0, h=10, text=author, border=0, align="C")
