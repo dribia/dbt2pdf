@@ -9,7 +9,7 @@ from typing import Any, Literal
 from fpdf import FPDF
 
 from dbt2pdf.font import find
-from dbt2pdf.schemas import ExtractedDescription
+from dbt2pdf.schemas import ExtractedDescription, TableOfContents, TableOfContentsEntry
 
 TITLE = "DBT Documentation"
 
@@ -70,15 +70,21 @@ class PDF(FPDF):
             self.bold_style = "B"
 
         self.logos = logos
-
         if len(logos) > 2:
             raise ValueError("Only two logos at maximum are allowed.")
+
+        # Keep track sections for ToC
+        self.sections: list = []
+
+    def add_section_toc(self, title, level=0):
+        """Adds a section with a title, its level and page number."""
+        self.sections.append((title, level, self.page_no()))
 
     def header(self) -> None:
         """Add a header to the PDF."""
         if self.is_first_page:
             return
-        if self.font_family is not None:
+        if self.font_family != "":
             self.set_font(family=self.font_family, size=10)
         self.set_text_color(r=54, g=132, b=235)
         self.cell(w=0, h=13, text=TITLE, border=0, align="L")
@@ -86,7 +92,7 @@ class PDF(FPDF):
 
         # Get page number and total pages
         page_number = self.page_no()
-        if self.font_family is not None:
+        if self.font_family != "":
             self.set_font(family=self.font_family, size=10)
         self.set_text_color(r=87, g=87, b=87)
         if self.total_pages is not None:
@@ -125,7 +131,7 @@ class PDF(FPDF):
 
         self.ln(100)
 
-        if self.font_family is not None:
+        if self.font_family != "":
             self.set_font(family=self.font_family, style=self.bold_style, size=35)
 
         self.set_text_color(r=0, g=76, b=183)
@@ -139,7 +145,7 @@ class PDF(FPDF):
 
         self.ln(80)
 
-        if self.font_family is not None:
+        if self.font_family != "":
             self.set_font(family=self.font_family, style=self.bold_style, size=14)
 
         self.set_text_color(r=0, g=0, b=78)
@@ -152,22 +158,26 @@ class PDF(FPDF):
 
     def chapter_title(self, title: str) -> None:
         """Add a chapter title to the PDF."""
-        if self.font_family is not None:
+        if self.font_family != "":
             self.set_font(family=self.font_family, style=self.bold_style, size=24)
 
         self.set_text_color(r=0, g=76, b=183)
         self.cell(w=0, h=10, text=title, border=0, align="L")
         self.ln(7)
 
-    def subchapter_title(self, title: str) -> None:
+    def subchapter_title(self, title: str, level: int | None) -> None:
         """Add a chapter title to the PDF."""
         self.ln(5)
-        if self.font_family is not None:
+        if self.font_family != "":
             self.set_font(family=self.font_family, style=self.bold_style, size=16)
 
         self.set_text_color(r=54, g=132, b=235)
+        self.start_section(title)
         self.cell(w=0, h=10, text=title, border=0, align="L")
         self.ln(10)
+
+        if level is not None:
+            self.add_section_toc(title=title, level=level)
 
     def chapter_body(
         self,
@@ -176,7 +186,7 @@ class PDF(FPDF):
         argument_descriptions: list[ExtractedDescription] | None = None,
     ) -> None:
         """Add a chapter body to the PDF."""
-        if self.font_family is not None:
+        if self.font_family != "":
             self.set_font(family=self.font_family, size=11)
         self.set_text_color(r=0, g=0, b=0)
 
@@ -187,7 +197,7 @@ class PDF(FPDF):
                 or line.startswith("Columns")
                 or line.startswith("Arguments")
             ):
-                if self.font_family is not None:
+                if self.font_family != "":
                     self.set_font(
                         family=self.font_family, style=self.bold_style, size=11
                     )
@@ -195,7 +205,7 @@ class PDF(FPDF):
                 self.set_text_color(r=54, g=132, b=235)
                 self.cell(w=0, h=10, text=line, new_x="LMARGIN", new_y="TOP")
                 self.ln(10)
-                if self.font_family is not None:
+                if self.font_family != "":
                     self.set_font(family=self.font_family, size=11)
                 self.set_text_color(r=0, g=0, b=0)
             else:
@@ -211,7 +221,7 @@ class PDF(FPDF):
         """Create a table with the provided data."""
         col_widths = [80, 100]  # Width of columns
         line_height = self.font_size * 2.5  # Adjust line height based on font size
-        if self.font_family is not None:
+        if self.font_family != "":
             self.set_font(family=self.font_family, style=self.bold_style, size=11)
 
         self.set_fill_color(r=200, g=220, b=255)
@@ -248,7 +258,7 @@ class PDF(FPDF):
                 fill=True,
             )
         self.ln(line_height)
-        if self.font_family is not None:
+        if self.font_family != "":
             self.set_font(family=self.font_family, size=11)
 
         for row in data:
@@ -264,17 +274,87 @@ class PDF(FPDF):
             row_height = self.get_y() - y_start
             self.set_y(y_start + row_height)
 
-    def add_page_with_title(self, title: str) -> None:
+    def add_page_with_title(self, title: str, level: int | None) -> None:
         """Add a page with title."""
         self.ln(10)
         self.is_intro_page = False
+        self.start_section(title)
         self.chapter_title(title)
+        if level is not None:
+            self.add_section_toc(title=title, level=level)
 
     def add_intro(self, intro_text: str) -> None:
         """Add introductory text to the PDF."""
         self.add_page()
-        if self.font_family is not None:
+        if self.font_family != "":
             self.set_font(family=self.font_family, size=12)
         self.set_text_color(r=0, g=0, b=0)
         self.multi_cell(w=0, h=6, text=intro_text)
         self.is_intro_page = False
+
+    def create_toc(self) -> TableOfContents:
+        """Creates table of content entries and estimates the num. of pages required."""
+        entries = []
+
+        for title, level, page in self.sections:
+            entry = TableOfContentsEntry(title=title, level=level, page=page)
+            entries.append(entry)
+
+        return TableOfContents(entries=entries, pages=round(len(entries) / 34))
+
+    def add_toc(self, toc_info: TableOfContents) -> None:
+        """Generates the table of contents on a separate page."""
+        self.add_page()
+        self.chapter_title("Table of Contents")
+        self.set_text_color(r=0, g=0, b=0)
+        self.ln(5)
+
+        # List all sections with page numbers
+        for entry in toc_info.entries:
+            title = entry.title
+            level = entry.level
+            page = entry.page + toc_info.pages
+            link = self.add_link()
+
+            self.set_link(link, page=page)
+
+            # self.set_font(family="Roboto", size=12)
+            indent = 10 * level + 0.001
+            self.cell(indent)
+
+            cell_height = 10
+            page_width = self.w - 20
+
+            left_text = f"{title}"
+            right_text = f"{page}"
+
+            left_text_width = self.get_string_width(left_text)
+            right_text_width = self.get_string_width(right_text)
+            if level != 0:
+                dot_space_width = (
+                    page_width - left_text_width - right_text_width - 10 - 10 * level
+                )
+            else:
+                dot_space_width = page_width - left_text_width - right_text_width - 10
+
+            dots = "." * (int(dot_space_width / self.get_string_width(".")) - 5)
+
+            right_text_width = self.get_string_width(right_text)
+
+            self.cell(
+                left_text_width,
+                cell_height,
+                left_text,
+                align="L",
+                link=link,  # type: ignore[arg-type]
+            )
+            self.cell(dot_space_width, cell_height, dots, align="C")
+            self.cell(
+                right_text_width,
+                cell_height,
+                right_text,
+                align="R",
+                link=link,  # type: ignore[arg-type]
+            )
+
+            self.ln(7)

@@ -27,3 +27,18 @@ class ExtractedMacro(BaseModel):
     name: str
     description: str
     argument_descriptions: list[ExtractedDescription] = []
+
+
+class TableOfContentsEntry(BaseModel):
+    """Table of Contents entry."""
+
+    title: str
+    level: int
+    page: int
+
+
+class TableOfContents(BaseModel):
+    """Schema for the Table of Contents."""
+
+    entries: list[TableOfContentsEntry]
+    pages: int
