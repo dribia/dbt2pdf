@@ -61,7 +61,7 @@ class PDF(FPDF):
                 self.bold_style = "B"
                 warnings.warn(
                     message=f"No fonts found with family '{font_family}' "
-                    f"having styles '', 'B', or 'I'. Setting font to default.",
+                    f"having styles the supported styles. Setting font to default.",
                     category=NoFontFamily,
                     stacklevel=1,
                 )
