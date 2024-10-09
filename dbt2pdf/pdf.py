@@ -53,18 +53,22 @@ class PDF(FPDF):
 
         if self.font_family != "":
             fonts = find(font_family)
-
-            for _, font in fonts.items():
-                if font.style.value == "B":
-                    self.bold_style = "B"
-                else:
-                    self.bold_style = ""
-
-                self.add_font(
-                    family=font.family, style=self.bold_style, fname=font.path
+            if not any(font.style.value == "" for _, font in fonts.items()):
+                raise ValueError(
+                    "No Regular style for the picked font. "
+                    "The font you pick needs to have at least a Regular style."
                 )
 
-            self.set_font(family=font_family, style=self.bold_style)
+            for _, font in fonts.items():
+                # Add bold type font style if available.
+                if font.style.value == "B":
+                    self.bold_style = "B"
+                    self.add_font(
+                        family=self.font_family, style=self.bold_style, fname=font.path
+                    )
+                # Add regular type font style if available.
+                if font.style.value == "":
+                    self.add_font(family=self.font_family, style="", fname=font.path)
         else:
             self.set_font("Times")
             self.bold_style = "B"
@@ -85,7 +89,7 @@ class PDF(FPDF):
         if self.is_first_page:
             return
         if self.font_family != "":
-            self.set_font(family=self.font_family, size=10)
+            self.set_font(family=self.font_family, style="", size=10)
         self.set_text_color(r=54, g=132, b=235)
         self.cell(w=0, h=13, text=TITLE, border=0, align="L")
         y = self.get_y()
@@ -93,7 +97,7 @@ class PDF(FPDF):
         # Get page number and total pages
         page_number = self.page_no()
         if self.font_family != "":
-            self.set_font(family=self.font_family, size=10)
+            self.set_font(family=self.font_family, style="", size=10)
         self.set_text_color(r=87, g=87, b=87)
         if self.total_pages is not None:
             self.set_x(190)  # Move to the right side
@@ -146,7 +150,7 @@ class PDF(FPDF):
         self.ln(80)
 
         if self.font_family != "":
-            self.set_font(family=self.font_family, style=self.bold_style, size=14)
+            self.set_font(family=self.font_family, style="", size=14)
 
         self.set_text_color(r=0, g=0, b=78)
         self.cell(
@@ -187,7 +191,7 @@ class PDF(FPDF):
     ) -> None:
         """Add a chapter body to the PDF."""
         if self.font_family != "":
-            self.set_font(family=self.font_family, size=11)
+            self.set_font(family=self.font_family, style="", size=11)
         self.set_text_color(r=0, g=0, b=0)
 
         lines = body.split("\n")
@@ -206,7 +210,7 @@ class PDF(FPDF):
                 self.cell(w=0, h=10, text=line, new_x="LMARGIN", new_y="TOP")
                 self.ln(10)
                 if self.font_family != "":
-                    self.set_font(family=self.font_family, size=11)
+                    self.set_font(family=self.font_family, style="", size=11)
                 self.set_text_color(r=0, g=0, b=0)
             else:
                 self.multi_cell(w=0, h=10, text=line, new_x="LMARGIN", new_y="TOP")
@@ -259,7 +263,7 @@ class PDF(FPDF):
             )
         self.ln(line_height)
         if self.font_family != "":
-            self.set_font(family=self.font_family, size=11)
+            self.set_font(family=self.font_family, style="", size=11)
 
         for row in data:
             # Save the current X position
@@ -287,7 +291,7 @@ class PDF(FPDF):
         """Add introductory text to the PDF."""
         self.add_page()
         if self.font_family != "":
-            self.set_font(family=self.font_family, size=12)
+            self.set_font(family=self.font_family, style="", size=12)
         self.set_text_color(r=0, g=0, b=0)
         self.multi_cell(w=0, h=6, text=intro_text)
         self.is_intro_page = False
@@ -308,6 +312,9 @@ class PDF(FPDF):
         self.chapter_title("Table of Contents")
         self.set_text_color(r=0, g=0, b=0)
         self.ln(5)
+
+        if self.font_family != "":
+            self.set_font(family=self.font_family, style="", size=12)
 
         # List all sections with page numbers
         for entry in toc_info.entries:
