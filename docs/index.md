@@ -44,7 +44,7 @@ pip install dbt2pdf
 
 ```commandline
 dbt2pdf generate \
-  --manifest-path ./manifest.json \
+  --manifest-path "path/to/manifest.json" \
   --title "DBT Documentation" \
   --add-author john@example.com \
   --add-author doe@example.com \

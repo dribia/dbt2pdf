@@ -2,23 +2,29 @@
 
 from __future__ import annotations
 
+import warnings
 from datetime import datetime
 from pathlib import Path
-from typing import Any
+from typing import Any, Literal
 
 from fpdf import FPDF
 
+from dbt2pdf.font import find
 from dbt2pdf.schemas import ExtractedDescription, TableOfContents, TableOfContentsEntry
-
-# FONTS_PATH = Path("fonts")
-TITLE = "DBT Documentation"
+from dbt2pdf.warnings import NoFontFamily, NoRegularStyle
 
 
 class PDF(FPDF):
     """Class to generate a PDF with the models and macros documentation."""
 
     def __init__(
-        self, *, title: str, authors: list[str], logos: list[Path], **kwargs: Any
+        self,
+        *,
+        title: str,
+        authors: list[str],
+        logos: list[Path],
+        font_family: str,
+        **kwargs: Any,
     ) -> None:
         """Initialize the PDF with custom margins and auto page breaks.
 
@@ -26,33 +32,76 @@ class PDF(FPDF):
             title: Document title (title page and headers).
             authors: List of authors to list them in the title page.
             logos: List of paths to logos (max 2).
+            font_family: Font family to use in the PDF document.
             **kwargs: Keyword arguments to the FPDF constructor.
         """
         super().__init__(**kwargs)
         # Document personalization
         self.title: str = title
         self.authors = authors
+
         # Document settings
         self.bottom_margin: int = 30
         self.set_auto_page_break(auto=True, margin=self.bottom_margin)
         self.is_first_page: bool = True
         self.is_intro_page: bool = True
         self.total_pages: int | None = None
-        self.set_font("Times")
+
+        # Find Font objects by font_family
+        self.font_family = font_family
+        self.bold_style: Literal["", "B"] = ""
+
+        if self.font_family != "":
+            fonts = find(font_family)
+
+            if not fonts:
+                self.set_font("Times")
+                self.bold_style = "B"
+                warnings.warn(
+                    message=(
+                        f"No fonts having supported styles found with family "
+                        f"'{font_family}'. Setting font to default."
+                    ),
+                    category=NoFontFamily,
+                    stacklevel=1,
+                )
+            elif not any(font.style.value == "" for _, font in fonts.items()):
+                self.set_font("Times")
+                self.bold_style = "B"
+                warnings.warn(
+                    message=(
+                        "No Regular style for the picked font. "
+                        "Setting font to default."
+                    ),
+                    category=NoRegularStyle,
+                    stacklevel=1,
+                )
+            else:
+                for _, font in fonts.items():
+                    # Add regular font style.
+                    if font.style.value == "":
+                        self.add_font(
+                            family=self.font_family, style="", fname=font.path
+                        )
+
+                    # Add bold style if available.
+                    if font.style.value == "B":
+                        self.bold_style = "B"
+                        self.add_font(
+                            family=self.font_family,
+                            style=self.bold_style,
+                            fname=font.path,
+                        )
+        else:
+            self.set_font("Times")
+            self.bold_style = "B"
+
         self.logos = logos
         if len(logos) > 2:
             raise ValueError("Only two logos at maximum are allowed.")
 
         # Keep track sections for ToC
         self.sections: list = []
-
-        # self.add_font(family="Roboto", fname=str(FONTS_PATH / "Roboto-Regular.ttf"))
-        # self.add_font(
-        #     family="Roboto", style="B", fname=str(FONTS_PATH / "Roboto-Bold.ttf")
-        # )
-        # self.add_font(
-        #     family="Roboto", style="I", fname=str(FONTS_PATH / "Roboto-Italic.ttf")
-        # )
 
     def add_section_toc(self, title, level=0):
         """Adds a section with a title, its level and page number."""
@@ -62,19 +111,25 @@ class PDF(FPDF):
         """Add a header to the PDF."""
         if self.is_first_page:
             return
-        # self.set_font(family="Roboto", size=10)
+        if self.font_family != "":
+            self.set_font(family=self.font_family, style="", size=10)
         self.set_text_color(r=54, g=132, b=235)
-        self.cell(w=0, h=13, text=TITLE, border=0, align="L")
+        self.cell(w=0, h=13, text=self.title, border=0, align="L")
         y = self.get_y()
 
         # Get page number and total pages
         page_number = self.page_no()
-        # self.set_font(family="Roboto", size=10)
+        if self.font_family != "":
+            self.set_font(family=self.font_family, style="", size=10)
         self.set_text_color(r=87, g=87, b=87)
         if self.total_pages is not None:
             self.set_x(190)  # Move to the right side
             self.cell(
-                w=0, h=13, text=f"{page_number}/{self.total_pages}", border=0, align="R"
+                w=0,
+                h=13,
+                text=f"{page_number}/{self.total_pages}",
+                border=0,
+                align="R",
             )
         self.set_draw_color(r=169, g=169, b=169)
         self.set_y(y + 10)
@@ -107,7 +162,9 @@ class PDF(FPDF):
 
         self.ln(100)
 
-        # self.set_font(family="Roboto", style="B", size=35)
+        if self.font_family != "":
+            self.set_font(family=self.font_family, style=self.bold_style, size=35)
+
         self.set_text_color(r=0, g=76, b=183)
         self.cell(w=0, h=10, text=self.title, border=0, align="C")
 
@@ -119,18 +176,23 @@ class PDF(FPDF):
 
         self.ln(80)
 
-        # self.set_font(family="Roboto", style="B", size=14)
+        if self.font_family != "":
+            self.set_font(family=self.font_family, style="", size=14)
+
         self.set_text_color(r=0, g=0, b=78)
         self.cell(
             w=0, h=10, text=datetime.today().strftime("%Y-%m-%d"), border=0, align="C"
         )
+        self.ln(7)
         for author in self.authors:
             self.ln(7)
             self.cell(w=0, h=10, text=author, border=0, align="C")
 
     def chapter_title(self, title: str) -> None:
         """Add a chapter title to the PDF."""
-        # self.set_font(family="Roboto", style="B", size=24)
+        if self.font_family != "":
+            self.set_font(family=self.font_family, style=self.bold_style, size=24)
+
         self.set_text_color(r=0, g=76, b=183)
         self.cell(w=0, h=10, text=title, border=0, align="L")
         self.ln(7)
@@ -138,7 +200,9 @@ class PDF(FPDF):
     def subchapter_title(self, title: str, level: int | None) -> None:
         """Add a chapter title to the PDF."""
         self.ln(5)
-        # self.set_font(family="Roboto", style="B", size=16)
+        if self.font_family != "":
+            self.set_font(family=self.font_family, style=self.bold_style, size=16)
+
         self.set_text_color(r=54, g=132, b=235)
         self.start_section(title)
         self.cell(w=0, h=10, text=title, border=0, align="L")
@@ -154,7 +218,8 @@ class PDF(FPDF):
         argument_descriptions: list[ExtractedDescription] | None = None,
     ) -> None:
         """Add a chapter body to the PDF."""
-        # self.set_font(family="Roboto", size=11)
+        if self.font_family != "":
+            self.set_font(family=self.font_family, style="", size=11)
         self.set_text_color(r=0, g=0, b=0)
 
         lines = body.split("\n")
@@ -164,11 +229,16 @@ class PDF(FPDF):
                 or line.startswith("Columns")
                 or line.startswith("Arguments")
             ):
-                # self.set_font(family="Roboto", style="B", size=11)
+                if self.font_family != "":
+                    self.set_font(
+                        family=self.font_family, style=self.bold_style, size=11
+                    )
+
                 self.set_text_color(r=54, g=132, b=235)
                 self.cell(w=0, h=10, text=line, new_x="LMARGIN", new_y="TOP")
                 self.ln(10)
-                # self.set_font(family="Roboto", size=11)
+                if self.font_family != "":
+                    self.set_font(family=self.font_family, style="", size=11)
                 self.set_text_color(r=0, g=0, b=0)
             else:
                 self.multi_cell(w=0, h=10, text=line, new_x="LMARGIN", new_y="TOP")
@@ -183,7 +253,9 @@ class PDF(FPDF):
         """Create a table with the provided data."""
         col_widths = [80, 100]  # Width of columns
         line_height = self.font_size * 2.5  # Adjust line height based on font size
-        # self.set_font(family="Roboto", style="B", size=11)
+        if self.font_family != "":
+            self.set_font(family=self.font_family, style=self.bold_style, size=11)
+
         self.set_fill_color(r=200, g=220, b=255)
 
         # Header
@@ -218,7 +290,8 @@ class PDF(FPDF):
                 fill=True,
             )
         self.ln(line_height)
-        # self.set_font(family="Roboto", size=11)
+        if self.font_family != "":
+            self.set_font(family=self.font_family, style="", size=11)
 
         for row in data:
             # Save the current X position
@@ -245,7 +318,8 @@ class PDF(FPDF):
     def add_intro(self, intro_text: str) -> None:
         """Add introductory text to the PDF."""
         self.add_page()
-        # self.set_font(family="Roboto", size=12)
+        if self.font_family != "":
+            self.set_font(family=self.font_family, style="", size=12)
         self.set_text_color(r=0, g=0, b=0)
         self.multi_cell(w=0, h=6, text=intro_text)
         self.is_intro_page = False
@@ -266,6 +340,9 @@ class PDF(FPDF):
         self.chapter_title("Table of Contents")
         self.set_text_color(r=0, g=0, b=0)
         self.ln(5)
+
+        if self.font_family != "":
+            self.set_font(family=self.font_family, style="", size=12)
 
         # List all sections with page numbers
         for entry in toc_info.entries:
