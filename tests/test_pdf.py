@@ -5,9 +5,9 @@ from unittest import mock
 
 import pytest
 
-from dbt2pdf.custom_warning import NoFontFamily
 from dbt2pdf.pdf import PDF
 from dbt2pdf.schemas import ExtractedDescription
+from dbt2pdf.warnings import NoFontFamily
 
 
 @pytest.fixture

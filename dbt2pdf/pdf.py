@@ -9,9 +9,9 @@ from typing import Any, Literal
 
 from fpdf import FPDF
 
-from dbt2pdf.custom_warning import NoFontFamily, NoRegularStyle
 from dbt2pdf.font import find
 from dbt2pdf.schemas import ExtractedDescription, TableOfContents, TableOfContentsEntry
+from dbt2pdf.warnings import NoFontFamily, NoRegularStyle
 
 
 class PDF(FPDF):
