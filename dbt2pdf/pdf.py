@@ -58,7 +58,10 @@ class PDF(FPDF):
                 self.set_font("Times")
                 self.bold_style = "B"
                 warnings.warn(
-                    message=f"No fonts having supported styles found with family '{font_family}'. Setting font to default.",
+                    message=(
+                        f"No fonts having supported styles found with family "
+                        f"'{font_family}'. Setting font to default."
+                    ),
                     category=NoFontFamily,
                     stacklevel=1,
                 )
@@ -66,7 +69,10 @@ class PDF(FPDF):
                 self.set_font("Times")
                 self.bold_style = "B"
                 warnings.warn(
-                    message="No Regular style for the picked font. Setting font to default.",
+                    message=(
+                        "No Regular style for the picked font. "
+                        "Setting font to default."
+                    ),
                     category=NoRegularStyle,
                     stacklevel=1,
                 )
@@ -119,7 +125,11 @@ class PDF(FPDF):
         if self.total_pages is not None:
             self.set_x(190)  # Move to the right side
             self.cell(
-                w=0, h=13, text=f"{page_number}/{self.total_pages}", border=0, align="R"
+                w=0,
+                h=13,
+                text=f"{page_number}/{self.total_pages}",
+                border=0,
+                align="R",
             )
         self.set_draw_color(r=169, g=169, b=169)
         self.set_y(y + 10)
