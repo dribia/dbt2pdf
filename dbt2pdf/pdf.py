@@ -13,8 +13,6 @@ from dbt2pdf.custom_warning import NoFontFamily, NoRegularStyle
 from dbt2pdf.font import find
 from dbt2pdf.schemas import ExtractedDescription, TableOfContents, TableOfContentsEntry
 
-TITLE = "DBT Documentation"
-
 
 class PDF(FPDF):
     """Class to generate a PDF with the models and macros documentation."""
@@ -110,7 +108,7 @@ class PDF(FPDF):
         if self.font_family != "":
             self.set_font(family=self.font_family, style="", size=10)
         self.set_text_color(r=54, g=132, b=235)
-        self.cell(w=0, h=13, text=TITLE, border=0, align="L")
+        self.cell(w=0, h=13, text=self.title, border=0, align="L")
         y = self.get_y()
 
         # Get page number and total pages
