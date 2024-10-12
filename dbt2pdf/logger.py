@@ -2,4 +2,4 @@
 
 import logging
 
-logger = logging.getLogger("fastapi")
+logger = logging.getLogger("dbt2pdf")
