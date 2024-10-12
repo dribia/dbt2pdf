@@ -1,6 +1,25 @@
 Dbt2PDF
 ==========================
 
+<p align="center">
+    <a href="https://dribia.github.io/driconfig">
+        <picture style="display: block; margin-left: auto; margin-right: auto; width: 40%;">
+            <source
+                media="(prefers-color-scheme: dark)"
+                srcset="https://dribia.github.io/driconfig/img/logo_dribia_blanc_cropped.png"
+            >
+            <source
+                media="(prefers-color-scheme: light)"
+                srcset="https://dribia.github.io/driconfig/img/logo_dribia_blau_cropped.png"
+            >
+            <img
+                alt="driconfig"
+                src="https://dribia.github.io/driconfig/img/logo_dribia_blau_cropped.png"
+            >
+        </picture>
+    </a>
+</p>
+
 |         |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
 |---------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | CI/CD   | [![Tests](https://github.com/dribia/dbt2pdf/actions/workflows/test.yml/badge.svg)](https://github.com/dribia/dbt2pdf/actions/workflows/test.yml) [![Coverage Status](https://img.shields.io/codecov/c/github/dribia/dbt2pdf)](https://codecov.io/gh/dribia/dbt2pdf) [![Tests](https://github.com/dribia/dbt2pdf/actions/workflows/lint.yml/badge.svg)](https://github.com/dribia/dbt2pdf/actions/workflows/lint.yml) [![types - Mypy](https://img.shields.io/badge/types-Mypy-blue.svg)](https://github.com/python/mypy) [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff) |
@@ -11,6 +30,14 @@ Dbt2PDF
 > This project is in early development stages and is not yet ready for production use.
 > Our priority at the moment is that it works for our use case, so we are not yet focusing on
 > covering all possible use cases.
+
+---
+
+**Documentation**: <a href="https://dribia.github.io/dbt2pdf" target="_blank">https://dribia.github.io/dbt2pdf</a>
+
+**Source Code**: <a href="https://github.com/dribia/dbt2pdf" target="_blank">https://github.com/dribia/dbt2pdf</a>
+
+---
 
 ## Installation
 

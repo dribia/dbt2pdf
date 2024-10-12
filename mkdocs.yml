@@ -12,8 +12,7 @@ repo_name: dribia/dbt2pdf
 repo_url: https://github.com/dribia/dbt2pdf
 edit_uri: ''
 nav:
-  - Welcome to dbt2pdf: index.md
-  - Installation: install.md
+  - First steps: index.md
   - Usage: usage.md
   - Contribute: contribute.md
 extra_css:

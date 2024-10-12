@@ -1,10 +1,10 @@
 # Contribute
 
 <p style="text-align: center; padding-bottom: 1rem;">
-    <a href="https://dribia.github.io/dbt2pdf">
+    <a href="/dbt2pdf">
         <img
             src="../img/logo_dribia_blau_cropped.png"
-            alt="dbt2pdf"
+            alt="Dribia"
             style="display: block; margin-left: auto; margin-right: auto; width: 40%;"
         >
     </a>
@@ -15,9 +15,7 @@
 </p>
 
 ## Mantainers
-dbt2pdf is maintained by:
-
-* Dribia Code - <code@dribia.com>
+dbt2pdf is officially maintained by **Dribia Code - <code@dribia.com>**.
 
 ## Issues
 Questions, feature requests and bug reports are all welcome as [discussions or issues](https://github.com/dribia/dbt2pdf/issues).
