@@ -32,7 +32,7 @@ pre-commit = ">=3.8,<5.0"
 
 [tool.poetry.group.lint.dependencies]
 ruff = "0.7.1"
-mypy = "1.11.2"
+mypy = "1.13.0"
 types-fpdf2 = "^2.7.9.20240813"
 
 [tool.poetry.group.test.dependencies]
