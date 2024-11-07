@@ -61,7 +61,7 @@ def generate(
     ] = None,
 ):
     """Generate the PDF documentation of a DBT project."""
-    with open(manifest_path, encoding="utf-8") as file:
+    with Path(manifest_path).open(encoding="utf-8") as file:
         manifest = parse_manifest(json.load(file))
     # Extract relevant information (models and macros)
     extracted_data = []
@@ -73,7 +73,7 @@ def generate(
         logos = []
 
     if len(logos) > 2:
-        raise ValueError("Only two logos at maximum are allowed.")
+        raise ValueError("Only two logos at maximum are allowed.")  # noqa: TRY003
 
     for node_info in manifest.nodes.values():
         if node_info.resource_type == "model":

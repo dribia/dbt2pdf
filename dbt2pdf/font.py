@@ -96,7 +96,7 @@ class Font(BaseModel):
             style = style.upper()
             style = STYLE_ALIASES.get(style, style)
             if style not in FontStyle.__members__:
-                raise Warning(f"Invalid font style: {style}")
+                raise Warning(style)
 
         return Font(path=path, family=family, style=FontStyle[style.upper()])
 
@@ -108,13 +108,12 @@ def find(family: str) -> Dict[FontStyle, Font]:
         for font_path in findSystemFonts():
             try:
                 font = Font.get_font(font_path)
-                if font.family.lower() == family.lower():
-                    if font.style in [
-                        FontStyle.REGULAR,
-                        FontStyle.BOLD,
-                        FontStyle.ITALIC,
-                    ]:
-                        font_dict[font.style] = font
+                if font.family.lower() == family.lower() and font.style in [
+                    FontStyle.REGULAR,
+                    FontStyle.BOLD,
+                    FontStyle.ITALIC,
+                ]:
+                    font_dict[font.style] = font
             except Exception as e:
                 logger.debug(f"Error processing font at {font_path}: {e}")
 

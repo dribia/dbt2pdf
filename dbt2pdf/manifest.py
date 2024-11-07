@@ -70,8 +70,7 @@ def parse_manifest(manifest: dict[str, Any]) -> Manifest:
     """Parse a DBT manifest file."""
     if pydantic.__version__.startswith("1."):
         return Manifest.parse_obj(manifest)
-    else:
-        return Manifest.model_validate(manifest)
+    return Manifest.model_validate(manifest)
 
 
 __all__ = [

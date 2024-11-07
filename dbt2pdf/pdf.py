@@ -98,7 +98,7 @@ class PDF(FPDF):
 
         self.logos = logos
         if len(logos) > 2:
-            raise ValueError("Only two logos at maximum are allowed.")
+            raise ValueError("Only two logos at maximum are allowed.")  # noqa: TRY003
 
         # Keep track sections for ToC
         self.sections: list = []
@@ -170,7 +170,7 @@ class PDF(FPDF):
 
         logo_width = 40
         page_width = self.w
-        x_centered = (page_width - logo_width) / 2  # noqa: F841
+        x_centered = (page_width - logo_width) / 2
         if len(self.logos) > 1:
             self.image(name=self.logos[1], x=x_centered, y=140, w=logo_width)
 
