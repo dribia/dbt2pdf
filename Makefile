@@ -1,7 +1,19 @@
-PROJECT:= dbt2pdf
-TESTS:= tests
+.PHONY: all clean check test lint pip bump-version
 
-.PHONY: check test codestyle docstyle lint pip
+PROJECT ?= dbt2pdf
+TESTS ?= tests
+
+all:
+	make clean
+	make lint || exit 1
+	make test || exit 1
+
+clean:
+	rm -rf .pytest_cache
+	rm -rf .mypy_cache
+	rm -rf .ruff_cache
+	rm -f .coverage
+	rm -rf htmlcov
 
 check: format lint
 
@@ -25,3 +37,16 @@ test-unit:
 
 test-integration:
 	poetry run pytest -m "integration"
+
+bump-version:
+	@old_version=$$(poetry version -s); echo "Current version: $${old_version}"; \
+		commit_message=$$(poetry version "$(COMMIT_VERSION)"); \
+		new_version=$$(poetry version -s); \
+		if [ "$${old_version}" = "$${new_version}" ]; then \
+			echo "$${old_version} version update did not change the version number."; \
+			exit 0; \
+		else \
+		  poetry install; \
+		  git commit pyproject.toml -m ":arrow_up: $${commit_message}"; \
+		  git tag -a "v$${new_version}" -m ":arrow_up: $${commit_message}"; \
+		fi
