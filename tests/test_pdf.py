@@ -21,26 +21,23 @@ def _extracted_description():
 @pytest.fixture
 def _body():
     """Return a dummy body."""
-    body_ = """This is an example description for the model.
+    return """This is an example description for the model.
     Description: This is a description for the model.
     Columns:
     Arguments:
     """
-    return body_
 
 
 @pytest.fixture
 def _intro_text():
     """Return a dummy intro text."""
-    intro_text_ = (
+    return (
         "This document provides an overview of the DBT models and macros used in the "
         "project. It includes detailed descriptions of each model and macro, "
         "including the columns or arguments associated with them. The models section "
         "lists the models with their descriptions and column details. The macros "
         "section includes information about macros, their descriptions, and arguments."
     )
-
-    return intro_text_
 
 
 class TestPDF:
