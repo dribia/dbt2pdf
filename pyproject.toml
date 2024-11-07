@@ -83,6 +83,7 @@ ignore = [
     "RUF013",  # implicit optional
     "ISC001",  # allow implicit str concat
     "COM812",  # allow missing trailing comma
+    "TRY003",  # allow long description exceptions
 ]
 
 [tool.ruff.lint.per-file-ignores]

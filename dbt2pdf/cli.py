@@ -73,7 +73,7 @@ def generate(
         logos = []
 
     if len(logos) > 2:
-        raise ValueError("Only two logos at maximum are allowed.")  # noqa: TRY003
+        raise ValueError("Only two logos at maximum are allowed.")
 
     for node_info in manifest.nodes.values():
         if node_info.resource_type == "model":

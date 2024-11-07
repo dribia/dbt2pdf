@@ -98,7 +98,7 @@ class PDF(FPDF):
 
         self.logos = logos
         if len(logos) > 2:
-            raise ValueError("Only two logos at maximum are allowed.")  # noqa: TRY003
+            raise ValueError("Only two logos at maximum are allowed.")
 
         # Keep track sections for ToC
         self.sections: list = []
