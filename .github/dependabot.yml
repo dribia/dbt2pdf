@@ -17,6 +17,10 @@ updates:
         dependency-name: "pydantic"
       - dependency-type: "direct"
         dependency-name: "matplotlib"
+    groups:
+      all:
+        patterns:
+          - "*"
     commit-message:
       prefix: ":arrow_up:"
     versioning-strategy: "lockfile-only"
@@ -31,6 +35,10 @@ updates:
       - dependency-name: "fpdf2"
       - dependency-name: "pydantic"
       - dependency-name: "matplotlib"
+    groups:
+      all:
+        patterns:
+          - "*"
     commit-message:
       prefix: ":arrow_up:"
     versioning-strategy: "increase"
