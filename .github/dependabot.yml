@@ -5,11 +5,32 @@
 
 version: 2
 updates:
-  - package-ecosystem: "pip" # See documentation for possible values
+  - package-ecosystem: "pip"
+    target-branch: "main"
     directory: "/" # Location of package manifests
     schedule:
       interval: "weekly"
     allow:
       - dependency-type: "direct"
+        dependency-name: "fpdf2"
+      - dependency-type: "direct"
+        dependency-name: "pydantic"
+      - dependency-type: "direct"
+        dependency-name: "matplotlib"
     commit-message:
       prefix: ":arrow_up:"
+    versioning-strategy: "lockfile-only"
+
+  - package-ecosystem: "pip"
+    directory: "/" # Location of package manifests
+    schedule:
+      interval: "weekly"
+    allow:
+      - dependency-type: "direct"
+    ignore:
+      - dependency-name: "fpdf2"
+      - dependency-name: "pydantic"
+      - dependency-name: "matplotlib"
+    commit-message:
+      prefix: ":arrow_up:"
+    versioning-strategy: "increase"
