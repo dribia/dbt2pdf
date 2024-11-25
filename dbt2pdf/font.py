@@ -1,7 +1,6 @@
 """Module for font handling."""
 
 from enum import Enum
-from typing import Dict
 
 from matplotlib.font_manager import findSystemFonts
 from pydantic import BaseModel
@@ -101,7 +100,7 @@ class Font(BaseModel):
         return Font(path=path, family=family, style=FontStyle[style.upper()])
 
 
-def find(family: str) -> Dict[FontStyle, Font]:
+def find(family: str) -> dict[FontStyle, Font]:
     """Find fonts in the system by family."""
     font_dict = {}
     if family != "":

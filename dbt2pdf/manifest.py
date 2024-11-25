@@ -74,11 +74,11 @@ def parse_manifest(manifest: dict[str, Any]) -> Manifest:
 
 
 __all__ = [
-    "parse_manifest",
-    "Manifest",
-    "Macro",
     "Argument",
+    "Column",
+    "Macro",
+    "Manifest",
     "Node",
     "ResourceType",
-    "Column",
+    "parse_manifest",
 ]
