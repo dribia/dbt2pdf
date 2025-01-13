@@ -28,13 +28,13 @@ matplotlib = "^3.9.2"
 pydantic = ">=1.10,<3.0"
 
 [tool.poetry.group.ci.dependencies]
-setuptools = "^75.7.0"
+setuptools = "^75.8.0"
 
 [tool.poetry.group.dev.dependencies]
 pre-commit = ">=3.8,<5.0"
 
 [tool.poetry.group.lint.dependencies]
-ruff = "0.8.6"
+ruff = "0.9.1"
 mypy = "1.14.1"
 types-fpdf2 = "^2.8.2.20241223"
 
