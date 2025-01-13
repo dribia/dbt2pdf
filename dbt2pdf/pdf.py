@@ -70,8 +70,7 @@ class PDF(FPDF):
                 self.bold_style = "B"
                 warnings.warn(
                     message=(
-                        "No Regular style for the picked font. "
-                        "Setting font to default."
+                        "No Regular style for the picked font. Setting font to default."
                     ),
                     category=NoRegularStyle,
                     stacklevel=1,
