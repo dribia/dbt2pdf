@@ -501,20 +501,20 @@ woff = ["brotli (>=1.0.1) ; platform_python_implementation == \"CPython\"", "bro
 
 [[package]]
 name = "fpdf2"
-version = "2.8.3"
+version = "2.8.4"
 description = "Simple & fast PDF generation for Python"
 optional = false
-python-versions = ">=3.7"
+python-versions = ">=3.9"
 groups = ["main"]
 files = [
-    {file = "fpdf2-2.8.3-py2.py3-none-any.whl", hash = "sha256:0529d7bf1c46e7031768f442e7def37545b619b1bcd34e9c540de3d866f61550"},
-    {file = "fpdf2-2.8.3.tar.gz", hash = "sha256:494dc0bd935271c9ce16fb3a47c98b6f59b8d160cd519c2d3a7ed243c3852456"},
+    {file = "fpdf2-2.8.4-py2.py3-none-any.whl", hash = "sha256:bce1afc437107906dcdb0b95c300c7501002fe412c2ed36fa33c8f0a2f87ef3e"},
+    {file = "fpdf2-2.8.4.tar.gz", hash = "sha256:12b1f1dd35d0c2f35284bcfe10b153d6ca4baf29377379843e73d3f971eab6b7"},
 ]
 
 [package.dependencies]
 defusedxml = "*"
 fonttools = ">=4.34.0"
-Pillow = ">=6.2.2,<9.2.dev0 || >=9.3.dev0"
+Pillow = ">=8.0.0,<9.2.dev0 || >=9.3.dev0"
 
 [[package]]
 name = "ghp-import"
