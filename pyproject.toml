@@ -21,7 +21,7 @@ keywords = ["dbt", "pdf", "docs", "documentation"]
 
 [tool.poetry.dependencies]
 python = "^3.10"
-typer = "^0.16.1"
+typer = "^0.17.3"
 rich = "^14.1.0"
 fpdf2 = "^2.7.9"
 matplotlib = "^3.9.2"
@@ -34,7 +34,7 @@ setuptools = "^80.9.0"
 pre-commit = ">=3.8,<5.0"
 
 [tool.poetry.group.lint.dependencies]
-ruff = "0.12.10"
+ruff = "0.12.11"
 mypy = "1.17.1"
 types-fpdf2 = "^2.8.4.20250822"
 
