@@ -34,13 +34,13 @@ setuptools = "^80.9.0"
 pre-commit = ">=3.8,<5.0"
 
 [tool.poetry.group.lint.dependencies]
-ruff = "0.12.12"
-mypy = "1.17.1"
+ruff = "0.13.0"
+mypy = "1.18.1"
 types-fpdf2 = "^2.8.4.20250822"
 
 [tool.poetry.group.test.dependencies]
 pytest = "^8.4.2"
-pytest-cov = "^6.3.0"
+pytest-cov = "^7.0.0"
 
 [tool.poetry.group.docs.dependencies]
 mkdocs = "^1.5.3"
