@@ -67,7 +67,7 @@ class TestPDF:
         ]
         font_family = ""
 
-        with pytest.raises(ValueError, match="Only two logos at maximum are allowed."):
+        with pytest.raises(ValueError, match=r"Only two logos at maximum are allowed."):
             PDF(title=title, authors=authors, logos=logos, font_family=font_family)
 
     def test_pdf_initialization_invalid_font_family(self):
