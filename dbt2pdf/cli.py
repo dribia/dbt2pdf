@@ -2,7 +2,7 @@
 
 import json
 from pathlib import Path
-from typing import Annotated, Optional
+from typing import Annotated
 
 from rich.console import Console
 from typer import Argument, Option, Typer
@@ -33,25 +33,25 @@ def generate(
     ),
     title: Annotated[str, Option("--title", help="Title of the document.")] = TITLE,
     authors: Annotated[
-        Optional[list[str]],
+        list[str] | None,
         Option("--add-author", help="Add an author to the document."),
     ] = None,
     macro_packages: Annotated[
-        Optional[list[str]],
+        list[str] | None,
         Option(
             "--add-macros-package",
             help="Add macros from the given package to the generated document.",
         ),
     ] = None,
     font_family: Annotated[
-        Optional[str],
+        str | None,
         Option(
             "--font-family",
             help="Font family to use in the PDF document.",
         ),
     ] = None,
     logos: Annotated[
-        Optional[list[Path]],
+        list[Path] | None,
         Option(
             "--add-logo",
             help="Add a logo to the document. The logo should be a PNG file.",
