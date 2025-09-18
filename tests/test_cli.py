@@ -47,10 +47,11 @@ class TestSnapshotProcessing:
         """Test that snapshots are processed and included in PDF generation."""
         # Import the CLI module to ensure it's loaded
         from dbt2pdf import cli
-        
-        with patch.object(cli, 'PDF') as mock_pdf_class, \
-             patch.object(cli, 'parse_manifest') as mock_parse_manifest:
-            
+
+        with (
+            patch.object(cli, "PDF") as mock_pdf_class,
+            patch.object(cli, "parse_manifest") as mock_parse_manifest,
+        ):
             # Create mock manifest with snapshots
             mock_manifest = MagicMock()
             mock_manifest.nodes = {
@@ -81,13 +82,17 @@ class TestSnapshotProcessing:
             mock_manifest.nodes[
                 "snapshot.project.test_snapshot"
             ].description = "Test snapshot description"
-            mock_manifest.nodes["snapshot.project.test_snapshot"].resource_type = "snapshot"
+            mock_manifest.nodes[
+                "snapshot.project.test_snapshot"
+            ].resource_type = "snapshot"
             mock_manifest.nodes["snapshot.project.test_snapshot"].columns = {}
 
             mock_parse_manifest.return_value = mock_manifest
 
             # Create temporary manifest file
-            with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as f:
+            with tempfile.NamedTemporaryFile(
+                mode="w", suffix=".json", delete=False
+            ) as f:
                 json.dump({}, f)
                 temp_manifest_path = f.name
 
