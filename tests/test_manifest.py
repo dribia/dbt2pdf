@@ -8,7 +8,7 @@ import pytest
 from typer.testing import CliRunner
 
 from dbt2pdf import manifest
-from dbt2pdf.manifest import pydantic
+from dbt2pdf.manifest import ResourceType, pydantic
 
 runner = CliRunner()
 
@@ -79,3 +79,8 @@ class TestManifest:
 
         reload(dbt2pdf.manifest)
         assert isinstance(dbt2pdf.manifest._BaseSchema.model_config, dict)
+
+    def test_resource_type_includes_snapshot(self):
+        """Test that ResourceType enum includes snapshot."""
+        assert ResourceType.snapshot == "snapshot"
+        assert "snapshot" in [rt.value for rt in ResourceType]

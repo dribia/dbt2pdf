@@ -32,6 +32,7 @@ class ResourceType(str, Enum):
     test = "test"
     operation = "operation"
     model = "model"
+    snapshot = "snapshot"
     sql_operation = "sql_operation"
 
 

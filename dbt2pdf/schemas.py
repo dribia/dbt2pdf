@@ -29,6 +29,15 @@ class ExtractedMacro(BaseModel):
     argument_descriptions: list[ExtractedDescription] = []
 
 
+class ExtractedSnapshot(BaseModel):
+    """Snapshot extracted from the DBT manifest."""
+
+    name: str
+    description: str
+    columns: dict[str, Column] = {}
+    column_descriptions: list[ExtractedDescription] = []
+
+
 class TableOfContentsEntry(BaseModel):
     """Table of Contents entry."""
 

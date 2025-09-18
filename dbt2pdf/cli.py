@@ -10,7 +10,12 @@ from typer import Argument, Option, Typer
 from dbt2pdf import __version__, utils
 from dbt2pdf.manifest import parse_manifest
 from dbt2pdf.pdf import PDF
-from dbt2pdf.schemas import ExtractedDescription, ExtractedMacro, ExtractedModel
+from dbt2pdf.schemas import (
+    ExtractedDescription,
+    ExtractedMacro,
+    ExtractedModel,
+    ExtractedSnapshot,
+)
 
 app = Typer()
 
@@ -91,6 +96,24 @@ def generate(
             )
             extracted_data.append(model_info)
 
+    # Extract snapshot information
+    snapshot_data = []
+    for node_info in manifest.nodes.values():
+        if node_info.resource_type == "snapshot":
+            snapshot_info = ExtractedSnapshot(
+                name=utils.clean_text(node_info.name),
+                description=utils.clean_text(node_info.description),
+                columns=node_info.columns,
+                column_descriptions=[
+                    ExtractedDescription(
+                        name=utils.clean_text(col_name),
+                        description=utils.clean_text(col_info.description),
+                    )
+                    for col_name, col_info in node_info.columns.items()
+                ],
+            )
+            snapshot_data.append(snapshot_info)
+
     # Format the data for macros (keep only the ones of the current project)
     macro_data = []
     for macro_name, macro_info in manifest.macros.items():
@@ -109,11 +132,13 @@ def generate(
             macro_data.append(macro_info_dict)
 
     intro_text_ = (
-        "This document provides an overview of the DBT models and macros used in the "
-        "project. It includes detailed descriptions of each model and macro, including "
-        "the columns or arguments associated with them. The models section lists the "
-        "models with their descriptions and column details. The macros section "
-        "includes information about macros, their descriptions, and arguments."
+        "This document provides an overview of the DBT models, snapshots, and macros "
+        "used in the project. It includes detailed descriptions of each model, "
+        "snapshot, and macro, including the columns or arguments associated with them. "
+        "The models section lists the models with their descriptions and column "
+        "details. The snapshots section lists the snapshots with their descriptions "
+        "and column details. The macros section includes information about macros, "
+        "their descriptions, and arguments."
     )
 
     # font_family has to be a string, so convert it here to an empty one if None.
@@ -135,6 +160,15 @@ def generate(
             temp_pdf.chapter_body(
                 body=model.description,
                 column_descriptions=model.column_descriptions,
+            )
+
+    if snapshot_data:
+        temp_pdf.add_page_with_title(title="Snapshots", level=0)
+        for snapshot in snapshot_data:
+            temp_pdf.subchapter_title(title=snapshot.name, level=1)
+            temp_pdf.chapter_body(
+                body=snapshot.description,
+                column_descriptions=snapshot.column_descriptions,
             )
 
     if macro_data:
@@ -167,6 +201,15 @@ def generate(
             final_pdf.chapter_body(
                 body=model.description,
                 column_descriptions=model.column_descriptions,
+            )
+
+    if snapshot_data:
+        final_pdf.add_page_with_title(title="Snapshots", level=0)
+        for snapshot in snapshot_data:
+            final_pdf.subchapter_title(title=snapshot.name, level=1)
+            final_pdf.chapter_body(
+                body=snapshot.description,
+                column_descriptions=snapshot.column_descriptions,
             )
 
     if macro_data:
