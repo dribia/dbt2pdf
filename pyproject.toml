@@ -1,6 +1,6 @@
 [project]
 name = "dbt2pdf"
-version = "0.0.9"
+version = "0.0.10"
 description = "Generate a PDF document from your DBT project's documentation."
 authors = [{ name = "Dribia Code", email = "code@dribia.com" }]
 requires-python = ">=3.10,<3.14"
