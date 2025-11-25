@@ -3,7 +3,7 @@ name = "dbt2pdf"
 version = "0.0.10"
 description = "Generate a PDF document from your DBT project's documentation."
 authors = [{ name = "Dribia Code", email = "code@dribia.com" }]
-requires-python = ">=3.10,<3.14"
+requires-python = ">=3.10,<3.15"
 readme = "README.md"
 license = "MIT"
 maintainers = [{ name = "Dribia Code", email = "code@dribia.com" }]
@@ -30,9 +30,10 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
 ]
 dependencies = [
-    "typer>=0.17.4,<0.18",
+    "typer>=0.20.0,<0.21",
     "rich>=14.1.0,<15",
     "fpdf2>=2.7.9,<3",
     "matplotlib>=3.9.2,<4",
@@ -55,7 +56,7 @@ lint = [
     "types-fpdf2>=2.8.4.20250822,<3",
 ]
 test = [
-    "pytest>=8.4.2,<9",
+    "pytest>=9.0.1,<10",
     "pytest-cov>=7.0.0,<8",
 ]
 docs = [
