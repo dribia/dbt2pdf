@@ -51,8 +51,8 @@ dbt2pdf = "dbt2pdf.cli:app"
 ci = ["setuptools>=80.9.0,<81"]
 dev = ["pre-commit>=3.8,<5.0"]
 lint = [
-    "ruff==0.14.9",
-    "mypy==1.19.0",
+    "ruff==0.14.10",
+    "mypy==1.19.1",
     "types-fpdf2>=2.8.4.20250822,<3",
 ]
 test = [
