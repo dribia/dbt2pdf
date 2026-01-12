@@ -68,7 +68,7 @@ def generate(
         Path | None,
         Option(
             "--intro-text-file",
-            help="Replaces the DBT documentation introduction with custom text sourced from an external file.",
+            help="Replaces the default DBT documentation introduction with custom text sourced from an external file.",
             exists=True,
             dir_okay=False,
         ),
