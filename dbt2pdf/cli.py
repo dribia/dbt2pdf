@@ -64,10 +64,10 @@ def generate(
             dir_okay=False,
         ),
     ] = None,
-    custom_intro: Annotated[
+    alt_intro: Annotated[
         Path | None,
         Option(
-            "--custom-intro",
+            "--intro-text-file",
             help="Replaces the DBT documentation introduction with custom text sourced from an external file.",
             exists=True,
             dir_okay=False,
@@ -150,8 +150,8 @@ def generate(
         "their descriptions, and arguments."
     )
 
-    if custom_intro is not None:
-        with open(custom_intro, 'r') as file:
+    if alt_intro is not None:
+        with open(alt_intro, 'r') as file:
             intro_text_ = file.read()
 
     # font_family has to be a string, so convert it here to an empty one if None.
