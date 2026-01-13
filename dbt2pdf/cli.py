@@ -64,6 +64,15 @@ def generate(
             dir_okay=False,
         ),
     ] = None,
+    alt_intro: Annotated[
+        Path | None,
+        Option(
+            "--intro-text-file",
+            help="Replaces the default introduction with text from an external file.",
+            exists=True,
+            dir_okay=False,
+        ),
+    ] = None,
 ):
     """Generate the PDF documentation of a DBT project."""
     with Path(manifest_path).open(encoding="utf-8") as file:
@@ -140,6 +149,10 @@ def generate(
         "and column details. The macros section includes information about macros, "
         "their descriptions, and arguments."
     )
+
+    if alt_intro is not None:
+        with Path.open(alt_intro) as file:
+            intro_text_ = file.read()
 
     # font_family has to be a string, so convert it here to an empty one if None.
     if font_family is None:
