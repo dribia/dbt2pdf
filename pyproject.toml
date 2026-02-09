@@ -48,10 +48,10 @@ Repository = "https://github.com/dribia/dbt2pdf"
 dbt2pdf = "dbt2pdf.cli:app"
 
 [dependency-groups]
-ci = ["setuptools>=80.9.0,<81"]
+ci = ["setuptools>=80.9.0,<83"]
 dev = ["pre-commit>=3.8,<5.0"]
 lint = [
-    "ruff==0.14.14",
+    "ruff==0.15.0",
     "mypy==1.19.1",
     "types-fpdf2>=2.8.4.20250822,<3",
 ]
