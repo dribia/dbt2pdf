@@ -33,7 +33,7 @@ classifiers = [
     "Programming Language :: Python :: 3.14",
 ]
 dependencies = [
-    "typer>=0.20.0,<0.22",
+    "typer>=0.20.0,<0.24",
     "rich>=14.1.0,<15",
     "fpdf2>=2.7.9,<3",
     "matplotlib>=3.9.2,<4",
