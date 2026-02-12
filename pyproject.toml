@@ -58,9 +58,9 @@ docs = [
   "mkdocs-material>=9.6.20,<10",
 ]
 lint = [
-  "mypy==1.19.1",
   "ruff==0.15.0",
   "tombi==0.7.28",
+  "ty==0.0.16",
   "types-fpdf2>=2.8.4.20250822,<3",
 ]
 test = [
@@ -165,7 +165,7 @@ exclude_lines = [
 output = "coverage.xml"
 
 [tool.uv]
-required-version = ">=0.10.0,<1.0"
+required-version = ">=0.10.2,<1.0"
 default-groups = [
   "ci",
   "dev",

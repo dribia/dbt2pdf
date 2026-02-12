@@ -66,6 +66,7 @@ class TestManifest:
         reload(dbt2pdf.manifest)
         with pytest.raises(AttributeError):
             _ = dbt2pdf.manifest._BaseSchema.model_config
+        assert hasattr(dbt2pdf.manifest._BaseSchema, "Config")
         assert isinstance(dbt2pdf.manifest._BaseSchema.Config, object)
 
     @patch.object(pydantic, "__version__", "2.X")

@@ -37,7 +37,7 @@ class PDF(FPDF):
         """
         super().__init__(**kwargs)
         # Document personalization
-        self.title: str = title
+        self.title = title
         self.authors = authors
 
         # Document settings
@@ -113,7 +113,8 @@ class PDF(FPDF):
         if self.font_family != "":
             self.set_font(family=self.font_family, style="", size=10)
         self.set_text_color(r=54, g=132, b=235)
-        self.cell(w=0, h=13, text=self.title, border=0, align="L")
+        if self.title is not None:
+            self.cell(w=0, h=13, text=self.title, border=0, align="L")
         y = self.get_y()
 
         # Get page number and total pages
@@ -165,7 +166,8 @@ class PDF(FPDF):
             self.set_font(family=self.font_family, style=self.bold_style, size=35)
 
         self.set_text_color(r=0, g=76, b=183)
-        self.cell(w=0, h=10, text=self.title, border=0, align="C")
+        if self.title is not None:
+            self.cell(w=0, h=10, text=self.title, border=0, align="C")
 
         logo_width = 40
         page_width = self.w
@@ -380,7 +382,7 @@ class PDF(FPDF):
                 cell_height,
                 left_text,
                 align="L",
-                link=link,  # type: ignore[arg-type]
+                link=link,
             )
             self.cell(dot_space_width, cell_height, dots, align="C")
             self.cell(
@@ -388,7 +390,7 @@ class PDF(FPDF):
                 cell_height,
                 right_text,
                 align="R",
-                link=link,  # type: ignore[arg-type]
+                link=link,
             )
 
             self.ln(7)
