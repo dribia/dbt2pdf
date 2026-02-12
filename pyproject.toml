@@ -2,42 +2,42 @@
 name = "dbt2pdf"
 version = "0.1.1"
 description = "Generate a PDF document from your DBT project's documentation."
-authors = [{ name = "Dribia Code", email = "code@dribia.com" }]
-requires-python = ">=3.10,<3.15"
 readme = "README.md"
+requires-python = ">=3.10,<3.15"
 license = "MIT"
+authors = [{ name = "Dribia Code", email = "code@dribia.com" }]
 maintainers = [{ name = "Dribia Code", email = "code@dribia.com" }]
 keywords = [
-    "dbt",
-    "pdf",
-    "docs",
-    "documentation",
+  "dbt",
+  "docs",
+  "documentation",
+  "pdf",
 ]
 classifiers = [
-    "Development Status :: 2 - Pre-Alpha",
-    "Intended Audience :: Information Technology",
-    "Natural Language :: English",
-    "Operating System :: OS Independent",
-    "Topic :: Database",
-    "Topic :: Documentation",
-    "Topic :: Software Development :: Documentation",
-    "Typing :: Typed",
-    "Intended Audience :: Developers",
-    "License :: OSI Approved :: MIT License",
-    "Programming Language :: Python :: 3 :: Only",
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
-    "Programming Language :: Python :: 3.12",
-    "Programming Language :: Python :: 3.13",
-    "Programming Language :: Python :: 3.14",
+  "Development Status :: 2 - Pre-Alpha",
+  "Intended Audience :: Developers",
+  "Intended Audience :: Information Technology",
+  "License :: OSI Approved :: MIT License",
+  "Natural Language :: English",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Topic :: Database",
+  "Topic :: Documentation",
+  "Topic :: Software Development :: Documentation",
+  "Typing :: Typed",
 ]
 dependencies = [
-    "typer>=0.20.0,<0.24",
-    "rich>=14.1.0,<15",
-    "fpdf2>=2.7.9,<3",
-    "matplotlib>=3.9.2,<4",
-    "pydantic>=1.10,<3.0",
+  "fpdf2>=2.7.9,<3",
+  "matplotlib>=3.9.2,<4",
+  "pydantic>=1.10,<3.0",
+  "rich>=14.1.0,<15",
+  "typer>=0.20.0,<0.24",
 ]
 
 [project.urls]
@@ -48,71 +48,74 @@ Repository = "https://github.com/dribia/dbt2pdf"
 dbt2pdf = "dbt2pdf.cli:app"
 
 [dependency-groups]
+dev = [
+  "prek>=0.3.2,<1",
+]
 ci = ["setuptools>=80.9.0,<83"]
-dev = ["pre-commit>=3.8,<5.0"]
+docs = [
+  "mike>=2.1.3,<3",
+  "mkdocs>=1.5.3,<2",
+  "mkdocs-material>=9.6.20,<10",
+]
 lint = [
-    "ruff==0.15.0",
-    "mypy==1.19.1",
-    "types-fpdf2>=2.8.4.20250822,<3",
+  "mypy==1.19.1",
+  "ruff==0.15.0",
+  "tombi==0.7.28",
+  "types-fpdf2>=2.8.4.20250822,<3",
 ]
 test = [
-    "pytest>=9.0.1,<10",
-    "pytest-cov>=7.0.0,<8",
-]
-docs = [
-    "mkdocs>=1.5.3,<2",
-    "mkdocs-material>=9.6.20,<10",
-    "mike>=2.1.3,<3",
-]
-
-[tool.uv]
-default-groups = [
-    "ci",
-    "dev",
-    "lint",
-    "test",
-    "docs",
+  "pytest>=9.0.1,<10",
+  "pytest-cov>=7.0.0,<8",
 ]
 
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
+[tool.ruff]
+target-version = "py310"
+extend-include = ["*.ipynb"]
+include = [
+  "pyproject.toml",
+  "dbt2pdf/**/*.py",
+  "tests/**/*.py",
+]
+
 [tool.ruff.lint]
 select = [
-    "E",  # pycodestyle errors
-    "W",  # pycodestyle warnings
-    "F",  # pyflakes
-    "I",  # isort
-    "C",  # convention
-    "B",  # flake8-bugbear
-    "D",  # pydocstyle
-    "UP",  # pyupgrade
-    "N",  # pep8-naming
-    "NPY",  # numpy
-    "PD",   # pandas
-    "RUF",  # ruff
-    "PTH",  # pathlib
-    "SIM",  # simplify
-    "RET",  # return
-    "RSE",  # raise
-    "Q",  # quotes
-    "G",  # logging-format
-    "LOG",  # logging
-    "ISC",  # implicit str concat
-    "C4",  # comprehensions
-    "COM",  # commas
-    "TD",  # to-do
-    "INT",  # gettext
-    "TRY",  # tryceratops
+  "E",  # pycodestyle errors
+  "W",  # pycodestyle warnings
+  "F",  # pyflakes
+  "I",  # isort
+  "C",  # convention
+  "B",  # flake8-bugbear
+  "D",  # pydocstyle
+  "UP",  # pyupgrade
+  "N",  # pep8-naming
+  "NPY",  # numpy
+  "PD",  # pandas
+  "RUF",  # ruff
+  "PTH",  # pathlib
+  "SIM",  # simplify
+  "RET",  # return
+  "RSE",  # raise
+  "Q",  # quotes
+  "G",  # logging-format
+  "LOG",  # logging
+  "ISC",  # implicit str concat
+  "C4",  # comprehensions
+  "COM",  # commas
+  "TD",  # to-do
+  "INT",  # gettext
+  "TRY",  # tryceratops
 ]
 ignore = [
-    "C901",  # function is too complex
-    "N805",  # allow naming `self` to first class argument
-    "RUF013",  # implicit optional
-    "ISC001",  # allow implicit str concat
-    "COM812",  # allow missing trailing comma
-    "TRY003",  # allow long description exceptions
+  "C901",  # function is too complex
+  "N805",  # allow naming `self` to first class argument
+  "RUF013",  # implicit optional
+  "ISC001",  # allow implicit str concat
+  "COM812",  # allow missing trailing comma
+  "TRY003",  # allow long description exceptions
 ]
 
 [tool.ruff.lint.per-file-ignores]
@@ -131,14 +134,14 @@ ignore_missing_imports = false
 
 [[tool.mypy.overrides]]
 module = [
-    "dbt_artifacts_parser.parser",
+  "dbt_artifacts_parser.parser",
 ]
 ignore_missing_imports = true
 
 [tool.pytest.ini_options]
 minversion = "8.0"
 addopts = "--verbose"
-filterwarnings = 'error'
+filterwarnings = "error"
 xfail_strict = true
 testpaths = ["tests"]
 markers = [
@@ -152,11 +155,21 @@ branch = true
 [tool.coverage.report]
 precision = 2
 exclude_lines = [
-    'pragma: no cover',
-    'raise NotImplementedError',
-    'if TYPE_CHECKING:',
-    '@overload',
+  "pragma: no cover",
+  "raise NotImplementedError",
+  "if TYPE_CHECKING:",
+  "@overload",
 ]
 
 [tool.coverage.xml]
 output = "coverage.xml"
+
+[tool.uv]
+required-version = ">=0.10.0,<1.0"
+default-groups = [
+  "ci",
+  "dev",
+  "lint",
+  "test",
+  "docs",
+]

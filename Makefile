@@ -1,7 +1,6 @@
 .PHONY: all clean check test lint pip bump-version
 
 PROJECT ?= dbt2pdf
-TESTS ?= tests
 
 all:
 	make clean
@@ -18,8 +17,9 @@ clean:
 check: format lint
 
 format:
-	uv run ruff format $(PROJECT) tests
-	uv run ruff check --fix --unsafe-fixes $(PROJECT) $(TESTS)
+	uv run --frozen ruff format
+	uv run --frozen ruff check --fix
+	uv run --frozen tombi format **/*.toml
 
 --check-git-status:
 	@status=$$(git status --porcelain); \
@@ -31,9 +31,10 @@ format:
 		fi
 
 lint:
-	uv run ruff format --check $(PROJECT) $(TESTS)
-	uv run ruff check $(PROJECT) $(TESTS)
-	uv run mypy $(PROJECT)
+	uv run --frozen ruff format --check
+	uv run --frozen ruff check
+	uv run --frozen mypy $(PROJECT)
+	uv run --frozen tombi lint **/*.toml
 
 lock:
 	uv lock --no-update
@@ -81,19 +82,19 @@ bump-version:
 		then \
 			echo "uv.lock is up-to-date"; \
             uv sync; \
-  			uv run pre-commit install --install-hooks; \
+  			uv run prek install -f --install-hooks; \
 		else \
   			echo "uv.lock is NOT up-to-date."; \
   			echo "Update uv.lock and commit it."; \
 			uv sync; \
-			uv run pre-commit install --install-hooks; \
+			uv run prek install -f --install-hooks; \
 			git add uv.lock; \
-  			uv run pre-commit run --files uv.lock || true; \
+  			uv run prek run --files uv.lock || true; \
   			uv run git commit .pre-commit-config.yaml uv.lock -m ":lock: Lock the project dependencies"; \
 		fi
 
 setup:
 	@make -- --check-git-status || exit 1
 	@make -- --setup-uv || exit 1
-	@echo "Checking pre-commits ..."; poetry run pre-commit run --all-files || exit 1
+	@echo "Checking pre-commits ..."; poetry run prek run --all-files || exit 1
 	@echo "\nSetup completed successfully!\n"; exit 0
