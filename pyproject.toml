@@ -37,7 +37,7 @@ dependencies = [
   "matplotlib>=3.9.2,<4",
   "pydantic>=1.10,<3.0",
   "rich>=14.1.0,<15",
-  "typer>=0.20.0,<0.24",
+  "typer>=0.20.0,<0.25",
 ]
 
 [project.urls]
@@ -58,9 +58,9 @@ docs = [
   "mkdocs-material>=9.6.20,<10",
 ]
 lint = [
-  "ruff==0.15.0",
-  "tombi==0.7.28",
-  "ty==0.0.16",
+  "ruff==0.15.6",
+  "tombi==0.9.6",
+  "ty==0.0.23",
   "types-fpdf2>=2.8.4.20250822,<3",
 ]
 test = [
