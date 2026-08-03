@@ -58,9 +58,9 @@ docs = [
   "mkdocs-material>=9.6.20,<10",
 ]
 lint = [
-  "ruff==0.16.0",
+  "ruff==0.16.1",
   "tombi==1.2.4",
-  "ty==0.0.63",
+  "ty==0.0.65",
   "types-fpdf2>=2.8.4.20250822,<3",
 ]
 test = [
