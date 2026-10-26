@@ -600,14 +600,14 @@
 </div>
 <p>To define the dbt manifest file path, you can use the <code>manifest-path</code> option:
 <div class="highlight"><pre><span></span><code>dbt2pdf generate \
-  --manifest-path &quot;path/to/manifest.json&quot; \
+  --manifest-path "path/to/manifest.json" \
   output.pdf
 </code></pre></div></p>
 <h3 id="set-title-for-the-pdf">Set title for the PDF<a class="headerlink" href="#set-title-for-the-pdf" title="Permanent link">📎</a></h3>
 <p>To set the title for the PDF, you can use the <code>title</code> option:
 <div class="highlight"><pre><span></span><code>dbt2pdf generate \
-  --manifest-path &quot;path/to/manifest.json&quot; \
-  --title &quot;My Title for dbt Documentation&quot; \
+  --manifest-path "path/to/manifest.json" \
+  --title "My Title for dbt Documentation" \
   output.pdf
 </code></pre></div></p>
 <div class="admonition note">
@@ -617,36 +617,36 @@
 <h3 id="add-authors">Add authors<a class="headerlink" href="#add-authors" title="Permanent link">📎</a></h3>
 <p>To add authors to the documentation, you can use the <code>add-author</code> option:
 <div class="highlight"><pre><span></span><code>dbt2pdf generate \
-  --manifest-path &quot;path/to/manifest.json&quot; \
-  --add-author &quot;Jane Doe &lt;jane@example.com&gt;&quot; \
+  --manifest-path "path/to/manifest.json" \
+  --add-author "Jane Doe &lt;jane@example.com&gt;" \
   output.pdf
 </code></pre></div></p>
 <p>You can add multiple authors by using the <code>add-author</code> option multiple times:
 <div class="highlight"><pre><span></span><code>dbt2pdf generate \
-  --manifest-path &quot;path/to/manifest.json&quot; \
-  --add-author &quot;Jane Doe &lt;jane@example.com&gt;&quot;
-  --add-author &quot;John Doe &lt;john@example.com&gt;&quot;
+  --manifest-path "path/to/manifest.json" \
+  --add-author "Jane Doe &lt;jane@example.com&gt;"
+  --add-author "John Doe &lt;john@example.com&gt;"
   output.pdf
 </code></pre></div></p>
 <h3 id="include-macros-in-the-documentation">Include macros in the documentation<a class="headerlink" href="#include-macros-in-the-documentation" title="Permanent link">📎</a></h3>
 <p>To include macros in the documentation, you can use the <code>add-macros-package</code> option:
 <div class="highlight"><pre><span></span><code>dbt2pdf generate \
-  --manifest-path &quot;path/to/manifest.json&quot; \
-  --add-macros-package &quot;my_macros&quot; \
+  --manifest-path "path/to/manifest.json" \
+  --add-macros-package "my_macros" \
   output.pdf
 </code></pre></div></p>
 <h3 id="include-logos">Include logos<a class="headerlink" href="#include-logos" title="Permanent link">📎</a></h3>
 <p>It is possible to include up to two logos in the documentation. To include a logo, you can use the <code>add-logo</code> option:
 <div class="highlight"><pre><span></span><code>dbt2pdf generate \
-  --manifest-path &quot;path/to/manifest.json&quot; \
-  --add-logo &quot;path/to/logo.png&quot; \
+  --manifest-path "path/to/manifest.json" \
+  --add-logo "path/to/logo.png" \
     output.pdf
 </code></pre></div></p>
 <p>To include a second logo, you can use the <code>add-logo</code> option multiple times:
 <div class="highlight"><pre><span></span><code>dbt2pdf generate \
-  --manifest-path &quot;path/to/manifest.json&quot; \
-  --add-logo &quot;path/to/logo1.png&quot; \
-  --add-logo &quot;path/to/logo2.png&quot; \
+  --manifest-path "path/to/manifest.json" \
+  --add-logo "path/to/logo1.png" \
+  --add-logo "path/to/logo2.png" \
     output.pdf
 </code></pre></div></p>
 <div class="admonition warning">
@@ -659,8 +659,8 @@ the title on the title page.</p>
 <h3 id="customize-font">Customize font<a class="headerlink" href="#customize-font" title="Permanent link">📎</a></h3>
 <p>To customize the font used in the documentation, you can use the <code>font-family</code> option:
 <div class="highlight"><pre><span></span><code>dbt2pdf generate \
-  --manifest-path &quot;path/to/manifest.json&quot; \
-  --font-family &quot;Roboto&quot;
+  --manifest-path "path/to/manifest.json" \
+  --font-family "Roboto"
   output.pdf
 </code></pre></div></p>
 <div class="admonition warning">
